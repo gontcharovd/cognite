@@ -34,26 +34,14 @@ my_datapoints.plot()
 datapoints_df = my_datapoints.to_pandas()
 datapoints_df.head()
 
-my_asset = Asset(name="my first asset", parent_id=123)
-c.assets.create(my_asset)
-print(my_asset)
+asset_list = c.assets.list(limit=1)
 
-root = Asset(name="root", external_id="1")
-child = Asset(name="child", external_id="2", parent_external_id="1")
-descendant = Asset(name="descendant", external_id="3", parent_external_id="2")
-c.assets.create_hierarchy([root, child, descendant])
+oil_asset = c.assets.search(name='oil')
+asset_df = oil_asset.to_pandas()
+oil_asset_id = asset_df['id'].values
+oil_asset_id = int(oil_asset_id)
 
-try:
-    c.assets.create_hierarchy([root, child, descendant])
-    print('success!')
-except CogniteAPIError as e:
-    assets_posted = e.successful
-    assets_may_have_been_posted = e.unknown
-    assets_not_posted = e.failed
-
-print(assets_posted) 
-print(assets_may_have_been_posted) 
-print(assets_not_posted) 
-
-asset_list = c.assets.list(include_metadata=False)
+subtree_root_asset=oil_asset_id
+subtree = c.assets.retrieve(id=subtree_root_asset).subtree()
+related_events = subtree.events()
 
