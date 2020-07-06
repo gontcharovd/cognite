@@ -1,18 +1,77 @@
 # What is the typical difference between the input and output pressure of the compressor?
 
 import os
+import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from dotenv import load_dotenv
 from cognite.client import CogniteClient
 
-os.environ['COGNITE_API_KEY'] = 'MmM5NGUxYzQtOGE1Ny00ZDJkLWEzYTItMGQ4ZjM0NTFkZTAw' 
-os.environ['COGNITE_CLIENT_NAME'] = 'Denis' 
-os.environ['COGNITE_PROJECT'] = 'publicdata' 
-
+load_dotenv()
 c = CogniteClient()
 c.login.status()
 
-# 23-FCV-96193: VRD - PH PURGE 1 ST.COMP. MOTOR
-asset_id = 2209766572772321
-comp_motor = c.assets.retrieve(id=asset_id)
+COMPRESSOR_ID = 7372310232665628
 
-time_series = comp_motor.time_series() 
+subtree = c.assets.retrieve(id=COMPRESSOR_ID).subtree()
+subtree_df = subtree.to_pandas()
+
+pressure_sensors = subtree_df[subtree_df.name.str.contains('PT')]
+
+id_sensor_before = pressure_sensors.loc[
+    pressure_sensors.name=='23-PT-92532',
+    'id'
+].values
+id_sensor_after = pressure_sensors.loc[
+    pressure_sensors.name=='23-PT-92539',
+    'id'
+].values
+
+id_sensor_before = int(id_sensor_before)
+id_sensor_after = int(id_sensor_after)
+
+sensor_before = c.assets.retrieve(id=id_sensor_before)
+sensor_after = c.assets.retrieve(id=id_sensor_after)
+
+pressure_series_before = sensor_before.time_series()
+pressure_series_after = sensor_after.time_series()
+
+pressure_series_before.plot(
+    start='30d-ago',
+    end='now',
+    granularity='1d',
+    aggregates=['average']
+)
+
+pressure_series_after.plot(
+    start='30d-ago',
+    end='now',
+    granularity='1d',
+    aggregates=['average']
+)
+
+pressure_before = c.datapoints.retrieve(
+    id=int(pressure_series_before.to_pandas().id.values),
+    start='30d-ago',
+    end='now',
+    granularity='1d',
+    aggregates=['average']
+).to_pandas()
+
+pressure_before.rename('p_before', inplace=True)
+
+pressure_after = c.datapoints.retrieve(
+    id=int(pressure_series_after.to_pandas().id.values),
+    start='30d-ago',
+    end='now',
+    granularity='1d',
+    aggregates=['average']
+).to_pandas()
+
+pressure_df = pd.concat([pressure_before, pressure_after], axis=1)
+pressure_df.columns = ['p_before', 'p_after']
+pressure_df['p_diff'] = pressure_df['p_after'] - pressure_df['p_before'] 
+
+plot = pressure_df['p_diff'].plot()
+plt.plot(pressure_df)
+plt.show()

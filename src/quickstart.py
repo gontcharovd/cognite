@@ -1,15 +1,12 @@
 import os
 import pandas as pd
 import numpy as np
+from dotenv import load_dotenv
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset
 from cognite.client.exceptions import CogniteAPIError
 
-os.environ['COGNITE_API_KEY'] = 'MmM5NGUxYzQtOGE1Ny00ZDJkLWEzYTItMGQ4ZjM0NTFkZTAw' 
-os.environ['COGNITE_CLIENT_NAME'] = 'Denis' 
-os.environ['COGNITE_PROJECT'] = 'publicdata' 
-
-np.arange(10)
+load_dotenv()
 
 c = CogniteClient()
 status = c.login.status()
