@@ -23,6 +23,17 @@ events_df.type.value_counts()
 work_df = events_df[events_df.type.str.contains('Work')]
 pressure_sensors = subtree_df[subtree_df.name.str.contains('PT')]
 
+sensor_list = [
+    '23-PT-92531'
+    '23-PT-92532'
+    '23-PT-92535'
+    '23-PT-92536'
+    '23-PT-92537'
+    '23-PT-92539'
+    '23-PT-92540'
+]
+
+# get daily data for all these sensors
 id_sensor_before = pressure_sensors.loc[
     pressure_sensors.name=='23-PT-92532',
     'id'
