@@ -16,6 +16,11 @@ COMPRESSOR_ID = 7372310232665628
 subtree = c.assets.retrieve(id=COMPRESSOR_ID).subtree()
 subtree_df = subtree.to_pandas()
 
+events = subtree.events()
+events_df = events.to_pandas()
+events_df.type.value_counts()
+
+work_df = events_df[events_df.type.str.contains('Work')]
 pressure_sensors = subtree_df[subtree_df.name.str.contains('PT')]
 
 id_sensor_before = pressure_sensors.loc[
