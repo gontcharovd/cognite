@@ -22,7 +22,7 @@ c = CogniteClient()
 c.login.status()
 
 
-def get_pt_sensors(compressor_id=COMPRESSOR_ID, sensor_names=SENSOR_NAMES):
+def get_sensor_ids(compressor_id=COMPRESSOR_ID, sensor_names=SENSOR_NAMES):
     """Get the ids of the chosen compressor sensors.
     Args:
         sensor_ids (list): list with sensor ids
@@ -50,6 +50,7 @@ def get_sensor_data(sensors, date):
     end = datetime.combine(date, datetime.max.time())
     pt_sensors = c.assets.retrieve_multiple(ids=pt_ids)
     sensors['series_ids'] = [serie.id for serie in pt_sensors.time_series()]
+    series_ids = [serie.id for serie in pt_sensors.time_series()]
     df = c.datapoints.retrieve_dataframe(
         id=list(sensors.series_ids),
         start=start,
@@ -73,7 +74,6 @@ def get_sensor_data(sensors, date):
 
 
 pt_sensors = get_pt_sensors()
-pt_ids = list(pt_sensors.id.values)
 data = get_sensor_data(
     pt_sensors,
     date(2020, 5, 18)
