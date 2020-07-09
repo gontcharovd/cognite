@@ -6,14 +6,8 @@ from datetime import date, datetime
 from dotenv import load_dotenv
 from cognite.client import CogniteClient
 
-load_dotenv()
-c = CogniteClient()
-c.login.status()
-
 COMPRESSOR_ID = 7372310232665628
-subtree_df = c.assets.retrieve(id=COMPRESSOR_ID).subtree().to_pandas()
-
-sensor_list = [
+SENSOR_NAMES = [
     '23-PT-92531', \
     '23-PT-92532', \
     '23-PT-92535', \
@@ -22,40 +16,58 @@ sensor_list = [
     '23-PT-92539', \
     '23-PT-92540' 
 ]
- 
-pressure_sensors = subtree_df.loc[
-    subtree_df['name'].isin(sensor_list),
-    ['name', 'id']
-]
+
+load_dotenv()
+c = CogniteClient()
+c.login.status()
 
 
-def get_sensor_data(sensor_id, date):
+def get_sensor_ids(compressor_id=COMPRESSOR_ID, sensor_names=SENSOR_NAMES):
+    """Get the ids of the chosen compressor sensors.
+    Args:
+        sensor_ids (list): list with sensor ids
+        date (date): data for which to query data 
+    Returns:
+        pd.DataFrame with average pressure data per minute
+    """
+    subtree_df = c.assets.retrieve(id=COMPRESSOR_ID).subtree().to_pandas()
+    pt_sensors = subtree_df.loc[
+        subtree_df['name'].isin(SENSOR_NAMES),
+        ['name', 'id']
+    ]
+    pt_ids = list(pressure_sensors.id.values)
+    return pt_ids
+
+
+def get_sensor_data(sensor_ids, date):
     """Query sensor datapoints for the given date.
     Args:
-        sensor_id (int): unique id of the sensor
-        date (date): date for which data is queried
+        sensor_ids (list): list with sensor ids
+        date (date): data for which to query data 
     Returns:
-        pd.Series with pressure data per minute
+        pd.DataFrame with average pressure data per minute
     """
-    sensor = c.assets.retrieve(id=sensor_id)
-    series = sensor.time_series() 
-    series_id = int(series.to_pandas().id.values)
     start = datetime.combine(date, datetime.min.time())
     end = datetime.combine(date, datetime.max.time())
-    pressure = c.datapoints.retrieve(
-        id=series_id,
+    pt_sensors = c.assets.retrieve_multiple(ids=pt_ids)
+    series_ids = [serie.id for serie in pt_sensors.time_series()]
+    pressure_df = c.datapoints.retrieve_dataframe(
+        id=series_ids,
         start=start,
         end=end,
-        granularity='60s',
+        granularity='1h',
         aggregates=['average']
-    ).to_pandas()
-    return pressure
+    )
+    # column names should be sensor ids
+    names = list(pressure_df.columns.values)
+    pressure_df.columns = [n.split('|')[0] for n in names]
+    return pressure_df
 
 
-sensor = '23-PT-92531' 
-sensor_id = 5231415482805125 
+pt_ids = get_sensor_ids()
+
 data = get_sensor_data(
-    sensor_id,
+    pt_ids,
     date(2020, 5, 18)
 )
 
