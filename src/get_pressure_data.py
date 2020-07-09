@@ -69,7 +69,6 @@ def get_sensor_data(sensors, date):
         var_name='series_id',
         value_name='pressure'
     ).astype({'series_id': 'int64'})
-    # long_df = long_df.join(sensors.set_index('id'), on='id')
     return long_df
 
 
