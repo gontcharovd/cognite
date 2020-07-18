@@ -68,9 +68,9 @@ pressure_series_after.plot(
 
 pressure_before = c.datapoints.retrieve(
     id=int(pressure_series_before.to_pandas().id.values),
-    start='30d-ago',
+    start='10d-ago',
     end='now',
-    granularity='1d',
+    granularity='1m',
     aggregates=['average']
 ).to_pandas()
 

@@ -1,9 +1,10 @@
+
 import os
 import airflow
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from dotenv import load_dotenv
 from cognite.client import CogniteClient
 from airflow import DAG
@@ -20,26 +21,43 @@ SENSOR_NAMES = [
     '23-PT-92539', \
     '23-PT-92540' 
 ]
+OUTPUT_PATH = os.path.join(
+    '/',
+    'home',
+    'gontcharovd',
+    'code',
+    'personal_projects',
+    'cognite',
+    'tmp'
+) 
+OUTPUT_FILE = 'postgres_query.sql'
 
 load_dotenv()
 c = CogniteClient()
 assert c.login.status().logged_in is True
 
+# today = 2020-07-18
+# data available partly for today - 7 days
+# first complete data day: 2020-07-10
+# therefore:
+    # start = ds - 8
+    # end = ds_next - 8
+
 dag = DAG(
-    'compressor_pressure',
+    'pressure',
     start_date=airflow.utils.dates.days_ago(10),
     schedule_interval='@daily',
-    template_searchpath='/tmp'
+    template_searchpath=OUTPUT_PATH
 )
 
 
 def _get_pt_sensors(compressor_id=COMPRESSOR_ID, sensor_names=SENSOR_NAMES):
     """Get the ids of the chosen compressor sensors.
     Args:
-        sensor_id (list): list with sensor ids
-        date (date): data for which to query data 
+        compressor_id (int): the asset id of the compressor
+        sensor_names (list): the names of the pressure sensors
     Returns:
-        (pd.DataFrame): average pressure data per minute
+        (pd.DataFrame): name and corresponding id of pressure sensors 
     """
     subtree_df = c.assets.retrieve(id=COMPRESSOR_ID).subtree().to_pandas()
     pt_sensors = subtree_df.loc[
@@ -49,16 +67,17 @@ def _get_pt_sensors(compressor_id=COMPRESSOR_ID, sensor_names=SENSOR_NAMES):
     return pt_sensors
 
 
-def _get_sensor_data(sensors, date):
+def _get_sensor_data(output_path, execution_date, next_execution_date, **context):
     """Query sensor datapoints for the given date.
     Args:
-        sensors (pd.DataFrame): sensor names and ids
-        date (date): data for which to query data 
-    Returns:
-        (pd.DataFrame): average pressure data per minute
+        output_path (str): file where the postgres SQL query will be written
+        execution_date (datetime): Airflow execution date
+        next_execution_date (datetime): Airflow next execution date
     """
-    start = datetime.combine(date, datetime.min.time())
-    end = datetime.combine(date, datetime.max.time())
+    # data is available with a delay of one week
+    start = execution_date - timedelta(days=8)
+    end = next_execution_date - timedelta(days=8) 
+    sensors = _get_pt_sensors()
     pt_ids = list(sensors.id.values)
     pt_sensors = c.assets.retrieve_multiple(ids=pt_ids)
     sensors['series_id'] = [serie.id for serie in pt_sensors.time_series()]
@@ -66,7 +85,7 @@ def _get_sensor_data(sensors, date):
         id=list(sensors.series_id),
         start=start,
         end=end,
-        granularity='1h',
+        granularity='1m',
         aggregates=['average']
     )
     # column names should be sensor ids
@@ -84,32 +103,23 @@ def _get_sensor_data(sensors, date):
         sensors.set_index('series_id')[['name', 'id']],
         on='series_id'
     )
-    with open('tmp/postgres_query.sql', 'w') as handle:
+    long_df.dropna(inplace=True)
+    with open(output_path, 'w') as handle:
         for _, vals in long_df.iterrows():
             handle.write(
-                'INSERT INTO pageview_counts VALUES ('
-                f"'{vals['timestamp']}'"
-                f"{vals['id']}"
-                f"'{vals['name']}'"
-                f"{vals['pressure']}"
-                ');\n'
+                'INSERT INTO pressure VALUES ('
+                f"'{vals['timestamp']}', "
+                f"{vals['id']}, "
+                f"'{vals['name']}', "
+                f"{vals['pressure']});\n"
             )
 
 
 get_sensor_data = PythonOperator(
     task_id='get_sensor_data',
     python_callable=_get_sensor_data,
-    op_kwargs={
-        'pagenames': {
-            'Google',
-            'Amazon',
-            'Apple',
-            'Microsoft',
-            'Facebook'
-        },
-        'execution_date': '{{ds}}'
-    },
     provide_context=True,
+    op_kwargs= {'output_path': os.path.join(OUTPUT_PATH, OUTPUT_FILE)},
     dag=dag
 )
 
@@ -117,16 +127,9 @@ get_sensor_data = PythonOperator(
 write_to_postgres = PostgresOperator(
    task_id='write_to_postgres',
    postgres_conn_id='cognite',
-   sql='postgres_query.sql',
+   sql=OUTPUT_FILE,
    dag=dag
 )
 
 
-get_pt_sensors >> get_sensor_data >> write_to_postgres 
-
-# pt_sensors = get_pt_sensors()
-# data = get_sensor_data(
-#     pt_sensors,
-#     date(2020, 5, 18)
-# )
-# data.head()
+get_sensor_data >> write_to_postgres 
