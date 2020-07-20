@@ -6,3 +6,4 @@ tags
 .env
 
 tmp/
+airflow/log

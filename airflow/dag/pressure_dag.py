@@ -1,4 +1,3 @@
-
 import os
 import airflow
 import numpy as np
@@ -36,16 +35,9 @@ load_dotenv()
 c = CogniteClient()
 assert c.login.status().logged_in is True
 
-# today = 2020-07-18
-# data available partly for today - 7 days
-# first complete data day: 2020-07-10
-# therefore:
-    # start = ds - 8
-    # end = ds_next - 8
-
 dag = DAG(
-    'pressure',
-    start_date=airflow.utils.dates.days_ago(10),
+    'compressor_pressure',
+    start_date=datetime(2020, 7, 1),
     schedule_interval='@daily',
     template_searchpath=OUTPUT_PATH
 )
@@ -107,11 +99,12 @@ def _get_sensor_data(output_path, execution_date, next_execution_date, **context
     with open(output_path, 'w') as handle:
         for _, vals in long_df.iterrows():
             handle.write(
-                'INSERT INTO pressure VALUES ('
+                'INSERT INTO compressor_pressure VALUES ('
                 f"'{vals['timestamp']}', "
                 f"{vals['id']}, "
                 f"'{vals['name']}', "
-                f"{vals['pressure']});\n"
+                f"{vals['pressure']}) "
+                "ON CONFLICT DO NOTHING;\n"
             )
 
 
