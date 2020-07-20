@@ -12,6 +12,9 @@ Write how your design choices guaranteed DAG atomicity and idempotency
 
 # TODO
 
+Figure out the location of the postgres database so that I can query it
+Preferably, I would like to have the location in the cognite project folder.
+Build an R Shiny app that queries the postgres database.
 
 ## Airflow
 

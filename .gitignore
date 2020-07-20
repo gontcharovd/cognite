@@ -4,6 +4,8 @@ tags
 *.swo
 *.swp
 .env
-
 tmp/
 airflow/log
+airflow/dag/__pycache__/
+*.pyc
+*.pyo
