@@ -9,3 +9,5 @@ airflow/log
 airflow/dag/__pycache__/
 *.pyc
 *.pyo
+packrat/lib*/
+packrat/src

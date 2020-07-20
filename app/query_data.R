@@ -1,26 +1,18 @@
-library(DBI)
-
+dotenv::load_dot_env()
 
 con <- DBI::dbConnect(
    RPostgres::Postgres(),
-   dbname = "postgres",
-   host = "/var/run/postgresql",
-   user = "postgres",
-   port = 5432
-)
-
-pg <- dbDriver("PostgreSQL")
-
-con <- DBI::dbConnect(
-   odbc::odbc(),
-   driver = "PostgreSQL UNICODE",
    dbname = "cognite",
    host = "localhost",
-   user = "cognite",
-   db_port = 5432,
-   db_password = "cognite"
+   port = 5432,
+   user = Sys.getenv("USER"),
+   password = Sys.getenv("PWD") 
 )
 
-con <- dbConnect(odbc::odbc(), "PostgreSQL ANSI")
+DBI::dbListTables(con)
 
-con <- dbConnect(RPostgres::Postgres())
+query <- "select * from compressor_pressure order by timestamp desc limit 10;"
+data <- DBI::dbGetQuery(con, query)
+head(data)
+
+sapply(data, class)
