@@ -10,11 +10,18 @@ Visualize sensor data with R Shiny.
 
 Write how your design choices guaranteed DAG atomicity and idempotency
 
-# TODO
+# TO
+Check if the timezone in the DB is UTC
 
-Figure out the location of the postgres database so that I can query it
-Preferably, I would like to have the location in the cognite project folder.
-Build an R Shiny app that queries the postgres database.
+
+## R Shiny app components
+
+* Select pressure curves dygraphs similar to TAV-HTS project
+* Picture that highlights the selected sensors in color
+* bar chart uptime of the compressor within selected dygraph interval
+* relevant Apache Airflow logs and number of datapoints in the databas
+
+
 
 ## Airflow
 
