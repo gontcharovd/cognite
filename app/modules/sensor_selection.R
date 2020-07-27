@@ -8,14 +8,25 @@ source(file.path(APP_DIR, "functions.R"))
 #' @return Shiny selectizeInput
 sensor_select_ui <- function(id) {
   ns <- NS(id)
-  query_sensors <- "SELECT DISTINCT sensor_name FROM compressor_pressure;"
+  query_sensors <- "
+    SELECT DISTINCT
+      sensor_name
+    FROM
+      compressor_pressure
+    ORDER BY
+      sensor_name;
+    "
   sensor_choices <- execute_query(query_sensors)$sensor_name
   return(
-    selectizeInput(
+    shinyWidgets::pickerInput(
       ns("selectize"),
       label = h4("Sensors"),
-      choices = sensor_choices,
-      multiple = TRUE
+      choices = list(
+        First = sensor_choices,
+        Second = sensor_choices
+      ),
+      multiple = TRUE,
+      options =  list("max-options-group" = 1)
     )
   )
 }

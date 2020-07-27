@@ -19,3 +19,9 @@ WHERE
 )
 data <- execute_query(query_data)
 print(head(data))
+
+data_wide <- data.table::dcast(
+  data, timestamp ~ sensor_name, value.var = "pressure"
+)
+
+head(data_wide)

@@ -16,7 +16,7 @@ date_range_ui <- function(id) {
     dateRangeInput(
       ns("date_range"),
       label = h4("Date"),
-      separator = "from",
+      separator = "to",
       language = "en",
       weekstart = 1,
       start = date_max,

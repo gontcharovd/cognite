@@ -27,6 +27,7 @@ get_sensor_data <- function(input, output, session, dates, sensors) {
         "
       )
       sensor_data <- execute_query(query_data)
+      data.table::setDT(sensor_data)
     }
     sensor_data
   })
