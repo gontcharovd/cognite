@@ -12,3 +12,4 @@ airflow/dag/__pycache__/
 packrat/lib*/
 packrat/src
 *.csv
+notes.md

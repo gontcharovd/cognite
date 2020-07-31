@@ -4,17 +4,20 @@
 library(testthat)
 
 APP_DIR <- '/home/gontcharovd/code/personal_projects/cognite/app'
+
 source(file.path(APP_DIR, "functions.R"))
 
-context("timezone")
-test_that(
-  "Get 1m pressure values for sensor 23-PT-92532 between
-  '2020-07-12 14:00:00 UTC' and '2020-07-12 14:10:00 UTC' from two sources:
-  1) from Cognite Python SDK
-  2) from the PostgreSQL database
-  Test that the pressure of the same timestamp are equal in both sources
-   ", {
-  data_cognite_sdk <- read.csv("app/test/data.csv", sep = ",", dec = ".")
+print("sup")
+
+# context("timezone")
+# test_that(
+#   "Get 1m pressure values for sensor 23-PT-92532 between
+#   '2020-07-12 14:00:00 UTC' and '2020-07-12 14:10:00 UTC' from two sources:
+#   1) from Cognite Python SDK
+#   2) from the PostgreSQL database
+#   Test that the pressure of the same timestamp are equal in both sources
+#    ", {
+#   data_cognite_sdk <- read.csv("app/test/data.csv", sep = ",", dec = ".")
   
   query_test  <- "
     SELECT
@@ -29,7 +32,7 @@ test_that(
   data_postgresql  <- execute_query(query_test)
   print(data_postgresql)
 
-  execute_query("SHOW TIMEZONE;")
+#   execute_query("SHOW TIMEZONE;")
 
   
       # timestamp BETWEEN timezone('UTC', '2020-07-12 12:00:00') AND 
