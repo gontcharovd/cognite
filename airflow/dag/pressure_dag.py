@@ -119,7 +119,7 @@ def _get_sensor_data(client, output_path, execution_date,
         for _, vals in long_df.iterrows():
             handle.write(
                 'INSERT INTO compressor_pressure VALUES ('
-                f"timezone('UTC', '{vals['timestamp']}'), "
+                f"'{vals['timestamp']}Z', "
                 f"{vals['id']}, "
                 f"'{vals['name']}', "
                 f"{vals['pressure']}) "
