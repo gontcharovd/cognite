@@ -14,17 +14,17 @@ library(magrittr)
 #' @param data a data.table with data for dygraphs (reactive)
 #'
 #' @return nothing
-get_pressure_dygraph <- function(input, output, session, sensor_data) {
+get_pressure_dygraph <- function(input, output, session, sensor_data, config) {
   pressure_dygraph  <- reactive({
     if (is.null(sensor_data())) {
         pressure_dygraph <- NULL
-      } else { 
+      } else {
       data_wide <- data.table::dcast(
         sensor_data(),
-        timestamp ~ sensor_name, 
+        timestamp ~ sensor_name,
         value.var = "pressure"
       )
-      data_wide[, "pressure delta" := ifelse(
+      data_wide[, pressure_delta := ifelse(
           ncol(data_wide) == 2, 0, abs(data_wide[, 2] - data_wide[, 3])
       )]
       time_series <- xts::xts(
@@ -32,7 +32,7 @@ get_pressure_dygraph <- function(input, output, session, sensor_data) {
         order.by = data_wide[, timestamp],
         tzone = "UTC"
       )
-      pressure_dygraph <- create_dygraph(time_series) 
+      pressure_dygraph <- create_dygraph(time_series, config)
     }
   })
   return(pressure_dygraph)
@@ -45,24 +45,48 @@ get_pressure_dygraph <- function(input, output, session, sensor_data) {
 #' @param config configuration read from the csv file for the plotted variable
 #'
 #' @return a dygraph object
-create_dygraph <- function(time_series) {
+create_dygraph <- function(time_series, config) {
   graph <- dygraph(time_series, main = NULL) %>%
+		configure_dyseries(time_series, config) %>%
     dyRangeSelector(retainDateWindow = TRUE) %>%
     dyCrosshair(direction = "both") %>%
     dyLegend(
-      labelsDiv = "dygraph_legend", 
+      labelsDiv = "dygraph_legend",
       labelsSeparateLines = TRUE,
       hideOnMouseOut = FALSE
     ) %>%
-    dyRoller(rollPeriod=1) %>%
+    dyRoller(rollPeriod = 1) %>%
     dyOptions(
       axisLineWidth = 1.5,
-      useDataTimezone = TRUE,
-      fillGraph=FALSE,
+      # useDataTimezone = TRUE,
+      fillGraph = FALSE,
       fillAlpha = 0.1,
       drawGrid = TRUE,
       rightGap = 40
     ) %>%
     dyAxis("y", label = "pressure [barg]")
   return(graph)
+}
+
+
+configure_dyseries <- function(dygraph, time_series, config) {
+  for (sensor in setdiff(names(time_series), "timestamp")) {
+		dygraph <- dygraph %>%
+			dySeries(
+				name = sensor,
+				color = eval(
+					substitute(
+						config$sensors$sensor_name$color,
+						list(sensor_name = sensor)
+					)
+				),
+				label = eval(
+					substitute(
+						config$sensors$sensor_name$label,
+						list(sensor_name = sensor)
+					)
+				)
+		  )
+	}
+	return(dygraph)
 }

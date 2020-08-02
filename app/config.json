@@ -1,0 +1,37 @@
+{
+	"sensors": {
+		"23-PT-92531": {
+		  "color": "red",
+			"label": "23-PT-92531"
+		},
+		"23-PT-92532": {
+		  "color": "green",
+			"label": "23-PT-92532"
+		},
+	 "23-PT-92535": {
+		  "color": "blue",
+			"label": "23-PT-92535"
+		},
+   "23-PT-92536": {
+		  "color": "purple",
+			"label": "23-PT-92536"
+		},
+		"23-PT-92537": {
+		  "color": "black",
+			"label": "23-PT-92537"
+		},
+		"23-PT-92539": {
+		  "color": "cyan",
+			"label": "23-PT-92539"
+		},
+		"23-PT-92540": {
+		  "color": "orange",
+			"label": "23-PT-92540"
+		},
+		"pressure_delta": {
+		  "color": "brown",
+			"label": "Pressure Delta"
+		}
+}
+}
+

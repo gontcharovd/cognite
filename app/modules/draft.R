@@ -25,3 +25,5 @@ data_wide <- data.table::dcast(
 )
 
 head(data_wide)
+
+ts <- xts::xts(data_wide, order.by = data_wide$timestamp)

@@ -28,6 +28,7 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
+  config <- jsonlite::rea
   dates <- callModule(get_dates, "date_selection")
   output$dates <- renderText(dates())
   sensors <- callModule(get_sensors, "sensor_selection")
@@ -42,7 +43,7 @@ server <- function(input, output) {
     get_pressure_dygraph,
     "pressure_dygraph",
     sensor_data = sensor_data
-  )  
+  )
   output$pressure_dygraph <- renderDygraph(pressure_dygraph())
 }
 
