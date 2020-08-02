@@ -26,7 +26,8 @@ get_pressure_dygraph <- function(input, output, session, sensor_data, config) {
       )
       data_wide[, pressure_delta := ifelse(
           ncol(data_wide) == 2, 0, abs(data_wide[, 2] - data_wide[, 3])
-      )]
+        )
+      ]
       time_series <- xts::xts(
         x = data_wide[, -"timestamp"],
         order.by = data_wide[, timestamp],
@@ -47,7 +48,7 @@ get_pressure_dygraph <- function(input, output, session, sensor_data, config) {
 #' @return a dygraph object
 create_dygraph <- function(time_series, config) {
   graph <- dygraph(time_series, main = NULL) %>%
-		configure_dyseries(time_series, config) %>%
+    configure_dyseries(time_series, config) %>%
     dyRangeSelector(retainDateWindow = TRUE) %>%
     dyCrosshair(direction = "both") %>%
     dyLegend(
@@ -71,22 +72,22 @@ create_dygraph <- function(time_series, config) {
 
 configure_dyseries <- function(dygraph, time_series, config) {
   for (sensor in setdiff(names(time_series), "timestamp")) {
-		dygraph <- dygraph %>%
-			dySeries(
-				name = sensor,
-				color = eval(
-					substitute(
-						config$sensors$sensor_name$color,
-						list(sensor_name = sensor)
-					)
-				),
-				label = eval(
-					substitute(
-						config$sensors$sensor_name$label,
-						list(sensor_name = sensor)
-					)
-				)
-		  )
-	}
-	return(dygraph)
+    dygraph <- dygraph %>%
+      dySeries(
+        name = sensor,
+        color = eval(
+          substitute(
+            config$sensors$sensor_name$color,
+            list(sensor_name = sensor)
+          )
+        ),
+        label = eval(
+          substitute(
+            config$sensors$sensor_name$label,
+            list(sensor_name = sensor)
+          )
+        )
+      )
+  }
+  return(dygraph)
 }

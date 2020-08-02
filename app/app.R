@@ -1,50 +1,79 @@
-library(shiny)
-library(shinydashboard)
+app_dir <- file.path(
+  "/",
+  "home",
+  "gontcharovd",
+  "code",
+  "personal_projects",
+  "cognite",
+  "app"
+)
+source_files <- c(
+  file.path(app_dir, "functions.R"),
+  file.path(app_dir, "modules", "date_selection.R"),
+  file.path(app_dir, "modules", "sensor_selection.R"),
+  file.path(app_dir, "modules", "query_data.R"),
+  file.path(app_dir, "modules", "create_dygraph.R"),
+  file.path(app_dir, "modules", "create_flowsheet.R")
+)
+sapply(source_files, source)
 
-APP_DIR <- '/home/gontcharovd/code/personal_projects/cognite/app'
-
-source(file.path(APP_DIR, "functions.R"))
-source(file.path(APP_DIR, "modules", "date_selection.R"))
-source(file.path(APP_DIR, "modules", "sensor_selection.R"))
-source(file.path(APP_DIR, "modules", "query_data.R"))
-source(file.path(APP_DIR, "modules", "create_dygraph.R"))
-
-ui <- dashboardPage(
-  dashboardHeader(),
-  dashboardSidebar(
+ui <- shinydashboard::dashboardPage(
+  shinydashboard::dashboardHeader(),
+  shinydashboard::dashboardSidebar(
     date_range_ui("date_selection"),
     sensor_select_ui("sensor_selection")
   ),
-  dashboardBody(
-    fluidRow(
-      box(HTML('&nbsp;') , dygraphOutput('pressure_dygraph'), width = NULL, solidHeader = TRUE),
+  shinydashboard::dashboardBody(
+    shiny::fluidRow(
+      shinydashboard::box(
+        shiny::HTML("&nbsp;"),
+        dygraphs::dygraphOutput("pressure_dygraph"),
+        width = NULL,
+        solidHeader = TRUE
+      ),
     ),
-    fluidRow(
-      box(title = "Legend", textOutput("dygraph_legend"), width = 4),
-      box(textOutput('dates')),
-      box(textOutput('sensors'))
+    shiny::fluidRow(
+      shinydashboard::box(
+        title = "Legend",
+        shiny::textOutput("dygraph_legend"), width = 4
+      ),
+      shinydashboard::box(
+        title = "Flowsheet",
+        shiny::imageOutput("flowsheet")
+      )
     )
   )
 )
 
 server <- function(input, output) {
-  config <- jsonlite::rea
-  dates <- callModule(get_dates, "date_selection")
-  output$dates <- renderText(dates())
-  sensors <- callModule(get_sensors, "sensor_selection")
-  output$sensors <- renderText(sensors())
-  sensor_data <- callModule(
+  config <- jsonlite::read_json(
+    file.path(app_dir, "input", "config.json")
+  )
+  image <- file.path(app_dir, "input", "compressor_flowsheet.png")
+  dates <- shiny::callModule(get_dates, "date_selection")
+  output$dates <- shiny::renderText(dates())
+  sensors <- shiny::callModule(get_sensors, "sensor_selection")
+  output$sensors <- shiny::renderText(sensors())
+  sensor_data <- shiny::callModule(
     get_sensor_data,
     "query_data",
     dates = dates,
     sensors = sensors
   )
-  pressure_dygraph <- callModule(
+  pressure_dygraph <- shiny::callModule(
     get_pressure_dygraph,
     "pressure_dygraph",
-    sensor_data = sensor_data
+    sensor_data = sensor_data,
+    config = config
   )
-  output$pressure_dygraph <- renderDygraph(pressure_dygraph())
+  output$pressure_dygraph <- dygraphs::renderDygraph(pressure_dygraph())
+  flowsheet <- shiny::callModule(
+    get_flowsheet,
+    "flowsheet",
+    image = image,
+    config = config
+  )
+  output$flowsheet <- shiny::renderImage(flowsheet(), deleteFile = False)
 }
 
-shinyApp(ui, server)
+shiny::shinyApp(ui, server)

@@ -2,35 +2,35 @@
 	"sensors": {
 		"23-PT-92531": {
 		  "color": "red",
-			"label": "23-PT-92531"
+			"label": "Pressure 23-PT-92531 [barg]"
 		},
 		"23-PT-92532": {
 		  "color": "green",
-			"label": "23-PT-92532"
+			"label": "Pressure 23-PT-92532 [barg]"
 		},
 	 "23-PT-92535": {
 		  "color": "blue",
-			"label": "23-PT-92535"
+			"label": "Pressure 23-PT-92535 [barg]"
 		},
    "23-PT-92536": {
 		  "color": "purple",
-			"label": "23-PT-92536"
+			"label": "Pressure 23-PT-92536 [barg]"
 		},
 		"23-PT-92537": {
 		  "color": "black",
-			"label": "23-PT-92537"
+			"label": "Pressure 23-PT-92537 [barg]"
 		},
 		"23-PT-92539": {
 		  "color": "cyan",
-			"label": "23-PT-92539"
+			"label": "Pressure 23-PT-92539 [barg]"
 		},
 		"23-PT-92540": {
 		  "color": "orange",
-			"label": "23-PT-92540"
+			"label": "Pressure 23-PT-92540 [barg]"
 		},
 		"pressure_delta": {
 		  "color": "brown",
-			"label": "Pressure Delta"
+			"label": "Pressure Delta [barg]"
 		}
 }
 }
