@@ -49,11 +49,8 @@ server <- function(input, output) {
   config <- jsonlite::read_json(
     file.path(app_dir, "input", "config.json")
   )
-  image <- file.path(app_dir, "input", "compressor_flowsheet.png")
   dates <- shiny::callModule(get_dates, "date_selection")
-  output$dates <- shiny::renderText(dates())
   sensors <- shiny::callModule(get_sensors, "sensor_selection")
-  output$sensors <- shiny::renderText(sensors())
   sensor_data <- shiny::callModule(
     get_sensor_data,
     "query_data",
@@ -67,13 +64,13 @@ server <- function(input, output) {
     config = config
   )
   output$pressure_dygraph <- dygraphs::renderDygraph(pressure_dygraph())
-  flowsheet <- shiny::callModule(
-    get_flowsheet,
+  flowsheet_list <- shiny::callModule(
+    get_flowsheet_list,
     "flowsheet",
-    image = image,
+    sensors = sensors,
     config = config
   )
-  output$flowsheet <- shiny::renderImage(flowsheet(), deleteFile = False)
+  output$flowsheet <- renderImage({flowsheet_list}, deleteFile = FALSE)
 }
 
 shiny::shinyApp(ui, server)

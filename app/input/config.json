@@ -32,6 +32,13 @@
 		  "color": "brown",
 			"label": "Pressure Delta [barg]"
 		}
-}
+  },
+  "flowsheet": {
+    "height": 300, 
+    "width": 600 ,
+    "alt": "",
+    "image_path": "/home/gontcharovd/code/personal_projects/cognite/app/input/compressor_flowsheet.png",
+    "tmpdir": "/home/gontcharovd/code/personal_projects/cognite/tmp/"
+  }
 }
 
