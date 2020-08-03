@@ -70,7 +70,7 @@ server <- function(input, output) {
     sensors = sensors,
     config = config
   )
-  output$flowsheet <- renderImage({flowsheet_list}, deleteFile = FALSE)
+  output$flowsheet <- renderImage({flowsheet_list}, deleteFile = TRUE)
 }
 
 shiny::shinyApp(ui, server)
