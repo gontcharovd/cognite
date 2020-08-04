@@ -2,31 +2,52 @@
 	"sensors": {
 		"23-PT-92531": {
 		  "color": "red",
-			"label": "Pressure 23-PT-92531 [barg]"
+			"label": "Pressure 23-PT-92531 [barg]",
+      "x": 388,
+      "y": 302,
+      "radius": 38
 		},
 		"23-PT-92532": {
 		  "color": "green",
-			"label": "Pressure 23-PT-92532 [barg]"
+			"label": "Pressure 23-PT-92532 [barg]",
+      "x": 435,
+      "y": 566,
+      "radius": 38
 		},
 	 "23-PT-92535": {
 		  "color": "blue",
-			"label": "Pressure 23-PT-92535 [barg]"
+			"label": "Pressure 23-PT-92535 [barg]",
+      "x": 388,
+      "y": 444,
+      "radius": 38
 		},
    "23-PT-92536": {
 		  "color": "purple",
-			"label": "Pressure 23-PT-92536 [barg]"
+			"label": "Pressure 23-PT-92536 [barg]",
+      "x": 953,
+      "y": 273,
+      "radius": 38
 		},
 		"23-PT-92537": {
 		  "color": "black",
-			"label": "Pressure 23-PT-92537 [barg]"
+			"label": "Pressure 23-PT-92537 [barg]",
+      "x": 953,
+      "y": 106,
+      "radius": 38
 		},
 		"23-PT-92539": {
 		  "color": "cyan",
-			"label": "Pressure 23-PT-92539 [barg]"
+			"label": "Pressure 23-PT-92539 [barg]",
+      "x": 1125,
+      "y": 566,
+      "radius": 38
 		},
 		"23-PT-92540": {
 		  "color": "orange",
-			"label": "Pressure 23-PT-92540 [barg]"
+			"label": "Pressure 23-PT-92540 [barg]",
+      "x": 388,
+      "y": 184,
+      "radius": 38
 		},
 		"pressure_delta": {
 		  "color": "brown",
@@ -34,8 +55,8 @@
 		}
   },
   "flowsheet": {
-    "height": 300, 
-    "width": 600 ,
+    "height": 400, 
+    "width": 400 ,
     "alt": "",
     "image_path": "/home/gontcharovd/code/personal_projects/cognite/app/input/compressor_flowsheet.png",
     "tmpdir": "/home/gontcharovd/code/personal_projects/cognite/app/input"

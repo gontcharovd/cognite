@@ -19,7 +19,7 @@ date_range_ui <- function(id) {
       separator = "to",
       language = "en",
       weekstart = 1,
-      start = date_max,
+      start = date_max - lubridate::days(7),
       end = date_max,
       min = date_min,
       max = date_max

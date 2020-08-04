@@ -24,23 +24,26 @@ ui <- shinydashboard::dashboardPage(
     sensor_select_ui("sensor_selection")
   ),
   shinydashboard::dashboardBody(
-    shiny::fluidRow(
+    shiny::column(
       shinydashboard::box(
         shiny::HTML("&nbsp;"),
         dygraphs::dygraphOutput("pressure_dygraph"),
         width = NULL,
+        height = 500,
         solidHeader = TRUE
       ),
-    ),
-    shiny::fluidRow(
       shinydashboard::box(
         title = "Legend",
-        shiny::textOutput("dygraph_legend"), width = 4
-      ),
+        shiny::textOutput("dygraph_legend")
+      ), width = 9
+    ),
+    shiny::column(
       shinydashboard::box(
         title = "Flowsheet",
-        shiny::imageOutput("flowsheet")
-      )
+        shiny::imageOutput("flowsheet"),
+        width = 300,
+        height = 500
+      ), width = 3
     )
   )
 )
@@ -70,7 +73,7 @@ server <- function(input, output) {
     sensors = sensors,
     config = config
   )
-  output$flowsheet <- renderImage({flowsheet_list}, deleteFile = TRUE)
+  output$flowsheet <- renderImage({flowsheet_list()}, deleteFile = TRUE)
 }
 
 shiny::shinyApp(ui, server)

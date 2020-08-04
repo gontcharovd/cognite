@@ -1,22 +1,47 @@
-# https://www.mobilefish.com/services/record_mouse_coordinates/record_mouse_coordinates.php
-# https://shiny.rstudio.com/articles/images.html
+# helper function
+get_coord <- function(sensor, coord, config) {
+  eval(
+    substitute(
+      config$sensors$sensor_name$coord,
+      list(sensor_name = sensor, coord = coord)
+    )
+  )
+}
+
 
 get_flowsheet_list <- function(input, output, session, sensors, config) {
   image_path <- config$flowsheet$image_path
-  image <- magick::image_read(image_path)
-  image_draw <- magick::image_draw(image)
-  graphics::rect(53, 36, 820, 590, border = "red", lty = "solid", lwd = 5)
-  dev.off()
-  tmpfile <- magick::image_write(
-    image_draw,
-    tempfile(fileext = ".png", tmpdir = config$flowsheet$tmpdir),
-    format = "png"
-  )
-  flowsheet_list <- list(
-    src = tmpfile,
-    alt = config$flowsheet$alt,
-    height = config$flowsheet$height,
-    width = config$flowsheet$width
-  )
+  flowsheet_list <- reactive({
+    image <- magick::image_read(image_path)
+    image_draw <- magick::image_draw(image)
+    if (length(sensors() > 0)) {
+      x_coords <- sapply(sensors(), function(s) get_coord(s, "x", config))
+      y_coords <- sapply(sensors(), function(s) get_coord(s, "y", config))
+      radii <- sapply(sensors(), function(s) get_coord(s, "radius", config))
+      colors <- sapply(sensors(), function(s) get_coord(s, "color", config))
+      graphics::symbols(
+        x_coords,
+        y_coords,
+        circles = radii,
+        inches = FALSE,
+        fg = colors,
+        bg = colors,
+        add = TRUE
+      )
+    }
+    dev.off()
+    tmpfile <- magick::image_write(
+      image_draw,
+      tempfile(fileext = ".png", tmpdir = config$flowsheet$tmpdir),
+      format = "png"
+    )
+    flowsheet_list <- list(
+      src = tmpfile,
+      alt = config$flowsheet$alt,
+      height = config$flowsheet$height,
+      width = config$flowsheet$width
+    )
+    flowsheet_list
+  })
   return(flowsheet_list)
 }

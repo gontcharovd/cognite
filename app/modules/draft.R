@@ -1,29 +1,13 @@
-APP_DIR <- '/home/gontcharovd/code/personal_projects/cognite/app'
-source(file.path(APP_DIR, "functions.R"))
-
-dates <- c("2020-07-01", "2020-07-10")
-sensors <- c("23-PT-92537", "23-PT-92535", "23-PT-92540")
-
-query_data  <- paste0("
-SELECT 
-  timestamp
-  , asset_id
-  , sensor_name
-  , pressure
-FROM
-  compressor_pressure
-WHERE
-  sensor_name IN (", add_quotes(sensors), ") AND
-  timestamp BETWEEN ", add_quotes(dates[1]), " AND ", add_quotes(dates[2]), ";
-"
+config <- jsonlite::read_json(
+  file.path(app_dir, "input", "config.json")
 )
-data <- execute_query(query_data)
-print(head(data))
-
-data_wide <- data.table::dcast(
-  data, timestamp ~ sensor_name, value.var = "pressure"
-)
-
-head(data_wide)
-
-ts <- xts::xts(data_wide, order.by = data_wide$timestamp)
+image_path <- config$flowsheet$image_path
+image <- magick::image_read(image_path)
+image_draw <- magick::image_draw(image)
+x <- seq(0, 1000, 10) 
+y <- rep(566, 101)
+r <- rep(2, 101)
+c <- rep("red", 101)
+graphics::symbols(x, y, circles = r, inches = FALSE, add = TRUE, fg = c)
+dev.off()
+magick::image_browse(image_draw)
