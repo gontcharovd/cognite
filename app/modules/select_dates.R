@@ -1,19 +1,19 @@
-library(shiny)
+# Shiny module that outputs date selection UI and selected dates.
 
-APP_DIR <- '/home/gontcharovd/code/personal_projects/cognite/app'
-source(file.path(APP_DIR, "functions.R"))
-
-#' Return a date range selector that find the database min and max date.
-#' @param id (character) used to specify the Shiny module namespace
-#' @return Shiny dateRangeInput
+# Return a date range selector that find the database min and max date.
+#
+# Args:
+#   id (character) used to specify the Shiny module namespace
+# Returns:
+#   Shiny dateRangeInput
 date_range_ui <- function(id) {
-  ns <- NS(id)
+  ns <- shiny::NS(id)
   query_min <- "SELECT MIN(timestamp) FROM compressor_pressure;"
   query_max <- "SELECT MAX(timestamp) FROM compressor_pressure;"
   date_min <- as.Date(execute_query(query_min)$min)
   date_max <- as.Date(execute_query(query_max)$max)
   return(
-    dateRangeInput(
+    shiny::dateRangeInput(
       ns("date_range"),
       label = h4("Date"),
       separator = "to",
@@ -27,14 +27,17 @@ date_range_ui <- function(id) {
   )
 }
 
-#' Shiny module server function for date selection.
-#' @param input not used
-#' @param output not used
-#' @param session not used
-#' @return the selected dates
+# Shiny module server function for date selection.
+#
+# Args
+#   input: selected dates from `date_range_ui`
+#   output: not used
+#   session not used
+# Returns:
+#   (character) vector of two selected dates
 get_dates <- function(input, output, session) {
-  date_range <- reactive({as.character(input$date_range)})
+  date_range <- reactive({
+    as.character(input$date_range)
+  })
   return(date_range)
 }
-
-

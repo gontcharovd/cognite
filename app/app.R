@@ -1,3 +1,6 @@
+# Shiny dashboard app
+# This file sources `functions.R` and 5 Shiny modules
+
 app_dir <- file.path(
   "/",
   "home",
@@ -9,8 +12,8 @@ app_dir <- file.path(
 )
 source_files <- c(
   file.path(app_dir, "functions.R"),
-  file.path(app_dir, "modules", "date_selection.R"),
-  file.path(app_dir, "modules", "sensor_selection.R"),
+  file.path(app_dir, "modules", "select_dates.R"),
+  file.path(app_dir, "modules", "select_sensors.R"),
   file.path(app_dir, "modules", "query_data.R"),
   file.path(app_dir, "modules", "create_dygraph.R"),
   file.path(app_dir, "modules", "create_flowsheet.R")
@@ -26,7 +29,6 @@ ui <- shinydashboard::dashboardPage(
   shinydashboard::dashboardBody(
     shiny::column(
       shinydashboard::box(
-        shiny::HTML("&nbsp;"),
         dygraphs::dygraphOutput("pressure_dygraph"),
         width = NULL,
         height = 500,
@@ -48,10 +50,14 @@ ui <- shinydashboard::dashboardPage(
   )
 )
 
-server <- function(input, output) {
-  config <- jsonlite::read_json(
-    file.path(app_dir, "input", "config.json")
-  )
+# Shiny server function.
+#
+# Args:
+#   input: not used
+#   output: passes rendered dygraph, flowsheet and legend to UI
+#   dir (character): full path to the app directory
+server <- function(input, output, dir = app_dir) {
+  config <- jsonlite::read_json(file.path(dir, "input", "config.json"))
   dates <- shiny::callModule(get_dates, "date_selection")
   sensors <- shiny::callModule(get_sensors, "sensor_selection")
   sensor_data <- shiny::callModule(
@@ -73,7 +79,9 @@ server <- function(input, output) {
     sensors = sensors,
     config = config
   )
-  output$flowsheet <- renderImage({flowsheet_list()}, deleteFile = TRUE)
+  output$flowsheet <- shiny::renderImage({
+    flowsheet_list()}, deleteFile = TRUE
+  )
 }
 
 shiny::shinyApp(ui, server)

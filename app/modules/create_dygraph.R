@@ -1,21 +1,19 @@
-library(shiny)
-library(xts)
-library(dygraphs)
+# Shiny module that creates a dygraph from reactive sensor_data.
+
 library(magrittr)
 
-#' Shiny module server function that:
-#' 1. creates a selectizeInput input to select variables to plot
-#' 2. renders dygraphs for the selected variables
-#'
-#' @param input selected_vars (reactive)
-#' @param output rendered_dygraphs (reactive), var_selection (reactive)
-#' @param session environment containing the session's namespace
-#' @param config a data.table containing dygraph configuration (non-reactive)
-#' @param data a data.table with data for dygraphs (reactive)
-#'
-#' @return nothing
+# Shiny module server function that creates a dygraph from sensor data.
+#
+# Args:
+#   input: not used
+#   output: not used
+#   session: not used
+#   sensor_data (data.table, reactive): with data for dygraphs
+#   config (list): dygraph configuration
+# Returns:
+#   (dygraph): graph with curves of selected sensor
 get_pressure_dygraph <- function(input, output, session, sensor_data, config) {
-  pressure_dygraph  <- reactive({
+  pressure_dygraph  <- shiny::reactive({
     if (is.null(sensor_data())) {
         pressure_dygraph <- NULL
       } else {
@@ -39,25 +37,25 @@ get_pressure_dygraph <- function(input, output, session, sensor_data, config) {
   return(pressure_dygraph)
 }
 
-#' helper function that creates a dygraph using config data
-#'
-#' @param datetime the x-axis POSIXct variable for the dygraph
-#' @param x the y-axis variable of the dygraph
-#' @param config configuration read from the csv file for the plotted variable
-#'
-#' @return a dygraph object
+# Create and configure a dygraph.
+#
+# Args:
+#   time_series (xts): pressure time series
+#   config (list): settings froma  json config file
+# Returns:
+#   (dygraph): the configured dygraph
 create_dygraph <- function(time_series, config) {
-  graph <- dygraph(time_series, main = NULL) %>%
+  graph <- dygraphs::dygraph(time_series, main = NULL) %>%
     configure_dyseries(time_series, config) %>%
-    dyRangeSelector(retainDateWindow = TRUE) %>%
-    dyCrosshair(direction = "both") %>%
-    dyLegend(
+    dygraphs::dyRangeSelector(retainDateWindow = TRUE) %>%
+    dygraphs::dyCrosshair(direction = "both") %>%
+    dygraphs::dyLegend(
       labelsDiv = "dygraph_legend",
       labelsSeparateLines = TRUE,
       hideOnMouseOut = FALSE
     ) %>%
-    dyRoller(rollPeriod = 1) %>%
-    dyOptions(
+    dygraphs::dyRoller(rollPeriod = 1) %>%
+    dygraphs::dyOptions(
       axisLineWidth = 1.5,
       # useDataTimezone = TRUE,
       fillGraph = FALSE,
@@ -65,15 +63,22 @@ create_dygraph <- function(time_series, config) {
       drawGrid = TRUE,
       rightGap = 40
     ) %>%
-    dyAxis("y", label = "pressure [barg]")
+    dygraphs::dyAxis("y", label = "pressure [barg]")
   return(graph)
 }
 
-
+# Configure dySeries from a config file.
+#
+# Args:
+#   dygraph (dygraph): parent dygraph
+#   time_series (xts): pressure time series
+#   config (list): settings froma  json config file
+# Returns:
+#   (dygraph): dygraph with configured dySeries
 configure_dyseries <- function(dygraph, time_series, config) {
   for (sensor in setdiff(names(time_series), "timestamp")) {
     dygraph <- dygraph %>%
-      dySeries(
+      dygraphs::dySeries(
         name = sensor,
         color = eval(
           substitute(

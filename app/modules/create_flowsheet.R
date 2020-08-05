@@ -1,4 +1,11 @@
-# helper function
+# Shiny module that outputs an image with annotated sensors.
+
+# Obtain a given coord for a given sensor from the config file.
+#
+# Args:
+#   sensor (character): sensor name
+#   coord (character): sensor key in config.json
+#   config (list): config.json file data
 get_coord <- function(sensor, coord, config) {
   eval(
     substitute(
@@ -8,7 +15,9 @@ get_coord <- function(sensor, coord, config) {
   )
 }
 
-
+# Assemble a list that can be rendered to an image.
+#
+# Args:
 get_flowsheet_list <- function(input, output, session, sensors, config) {
   image_path <- config$flowsheet$image_path
   flowsheet_list <- reactive({

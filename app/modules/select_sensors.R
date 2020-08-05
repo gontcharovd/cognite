@@ -1,13 +1,13 @@
-library(shiny)
+# Shiny module that outputs sensor selection UI and selected sensors.
 
-APP_DIR <- '/home/gontcharovd/code/personal_projects/cognite/app'
-source(file.path(APP_DIR, "functions.R"))
-
-#' Select a number of sensors by name
-#' @param id (character) used to specify the Shiny module namespace
-#' @return Shiny selectizeInput
+# Select a number of sensors by name.
+#
+# Args:
+#   id (character): used to specify the Shiny module namespace
+# Returns:
+#   Shiny selectizeInput
 sensor_select_ui <- function(id) {
-  ns <- NS(id)
+  ns <- shiny::NS(id)
   query_sensors <- "
     SELECT DISTINCT
       sensor_name
@@ -31,13 +31,17 @@ sensor_select_ui <- function(id) {
   )
 }
 
-#' Shiny module server function for date selection.
-#' @param input not used
-#' @param output not used
-#' @param session not used
-#' @return the selected dates
+# Shiny module server function for date selection.
+#
+# Args:
+#   input: sensors returned by `sensor_select_ui`
+#   output: not used
+#   session: not used
+# Returns:
+#   (character): vector of two dates
 get_sensors <- function(input, output, session) {
-  selected_sensors <- reactive({input$selectize})
+  selected_sensors <- reactive({
+    input$selectize
+  })
   return(selected_sensors)
 }
-
