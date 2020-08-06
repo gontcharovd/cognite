@@ -39,12 +39,6 @@ ui <- shinydashboard::dashboardPage(
         height = config$dygraph$box$height,
         width = config$dygraph$box$width
       ),
-      shinydashboard::box(
-        shiny::textOutput("dygraph_legend"),
-        title = config$legend$box$title,
-        height = config$legend$box$height,
-        width = config$legend$box$width
-      ),
       width = config$columns$left$width
     ),
     shiny::column(
@@ -53,6 +47,12 @@ ui <- shinydashboard::dashboardPage(
         title = config$flowsheet$box$title,
         height = config$flowsheet$box$height,
         width = config$flowsheet$box$width
+      ),
+      shinydashboard::box(
+        shiny::textOutput("dygraph_legend"),
+        title = config$legend$box$title,
+        height = config$legend$box$height,
+        width = config$legend$box$width
       ),
       width = config$columns$right$width
     )

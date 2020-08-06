@@ -4,29 +4,29 @@
   },
   "columns": {
     "left": {
-      "width": 9
+      "width": 10
     },
     "right": {
-      "width": 3
+      "width": 2
     }
   },
   "dygraph": {
     "main": "",
-    "retainDateWindow": "TRUE",
+    "retaindatewindow": "true",
     "direction": "both",
-    "labelsSeparateLines": "TRUE",
-    "hideOnMouseOut": "FALSE",
-    "rollPeriod": 1,
-    "axisLineWidth": 1.5,
-    "useDataTimezone": "TRUE",
-    "fillGraph": "FALSE",
-    "fillAlpha": 0.1,
-    "drawGrid": "TRUE",
-    "rightGap": 40,
+    "labelsseparatelines": "true",
+    "hideonmouseout": "false",
+    "rollperiod": 1,
+    "axislinewidth": 1.5,
+    "usedatatimezone": "true",
+    "fillgraph": "false",
+    "fillalpha": 0.1,
+    "drawgrid": "true",
+    "rightgap": 40,
     "y_label": "pressure [barg]",
     "box": {
-      "title": "Compressor sensor pressure",
-      "footer": "All timestamps in UTC" ,
+      "title": "compressor sensor pressure",
+      "footer": "all timestamps in utc" ,
       "height": 500,
       "width": "auto" 
     }
@@ -34,20 +34,20 @@
   "legend": {
     "box": {
       "title": "Legend",
-      "height": "auto",
-      "width": 3
+      "height": 150,
+      "width": 150
     }
   },
   "flowsheet": {
-    "height": 400, 
-    "width": 400 ,
+    "height": 270, 
+    "width": 270 ,
     "alt": "",
     "image_path": "/home/gontcharovd/code/personal_projects/cognite/app/input/compressor_flowsheet.png",
     "tmpdir": "/home/gontcharovd/code/personal_projects/cognite/app/input",
     "box": {
       "title": "Flowsheet",
-      "height": 500,
-      "width": 300
+      "height": 333,
+      "width": 150
     }
   },
 	"sensors": {
