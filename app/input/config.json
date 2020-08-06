@@ -19,14 +19,14 @@
     "rollperiod": 1,
     "axislinewidth": 1.5,
     "usedatatimezone": "true",
-    "fillgraph": "false",
-    "fillalpha": 0.1,
+    "fillGraph": "false",
+    "fillAlpha": 0.1,
     "drawgrid": "true",
     "rightgap": 40,
-    "y_label": "pressure [barg]",
+    "y_label": "Pressure [barg]",
     "box": {
-      "title": "compressor sensor pressure",
-      "footer": "all timestamps in utc" ,
+      "title": "Compressor sensor pressure",
+      "footer": "All timestamps in utc" ,
       "height": 500,
       "width": "auto" 
     }
