@@ -1,5 +1,57 @@
 {
+  "dashboard": {
+    "skin": "yellow"
+  },
+  "columns": {
+    "left": {
+      "width": 9
+    },
+    "right": {
+      "width": 3
+    }
+  },
+  "dygraph": {
+    "main": "",
+    "retainDateWindow": "TRUE",
+    "direction": "both",
+    "labelsSeparateLines": "TRUE",
+    "hideOnMouseOut": "FALSE",
+    "rollPeriod": 1,
+    "axisLineWidth": 1.5,
+    "useDataTimezone": "TRUE",
+    "fillGraph": "FALSE",
+    "fillAlpha": 0.1,
+    "drawGrid": "TRUE",
+    "rightGap": 40,
+    "y_label": "pressure [barg]",
+    "box": {
+      "title": "Compressor sensor pressure",
+      "footer": "All timestamps in UTC" ,
+      "height": 500,
+      "width": "auto" 
+    }
+  },
+  "legend": {
+    "box": {
+      "title": "Legend",
+      "height": "auto",
+      "width": 3
+    }
+  },
+  "flowsheet": {
+    "height": 400, 
+    "width": 400 ,
+    "alt": "",
+    "image_path": "/home/gontcharovd/code/personal_projects/cognite/app/input/compressor_flowsheet.png",
+    "tmpdir": "/home/gontcharovd/code/personal_projects/cognite/app/input",
+    "box": {
+      "title": "Flowsheet",
+      "height": 500,
+      "width": 300
+    }
+  },
 	"sensors": {
+    "label": "Sensors",
 		"23-PT-92531": {
 		  "color": "red",
 			"label": "Pressure 23-PT-92531 [barg]",
@@ -54,12 +106,12 @@
 			"label": "Pressure Delta [barg]"
 		}
   },
-  "flowsheet": {
-    "height": 400, 
-    "width": 400 ,
-    "alt": "",
-    "image_path": "/home/gontcharovd/code/personal_projects/cognite/app/input/compressor_flowsheet.png",
-    "tmpdir": "/home/gontcharovd/code/personal_projects/cognite/app/input"
+  "dates": {
+    "label": "Date range",
+    "separator": "to",
+    "language": "en",
+    "weekstart": 1,
+    "start_offset_days": 7
   }
 }
 

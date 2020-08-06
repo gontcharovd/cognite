@@ -45,25 +45,27 @@ get_pressure_dygraph <- function(input, output, session, sensor_data, config) {
 # Returns:
 #   (dygraph): the configured dygraph
 create_dygraph <- function(time_series, config) {
-  graph <- dygraphs::dygraph(time_series, main = NULL) %>%
+  graph <- dygraphs::dygraph(time_series, main = config$dygraph$main) %>%
     configure_dyseries(time_series, config) %>%
-    dygraphs::dyRangeSelector(retainDateWindow = TRUE) %>%
-    dygraphs::dyCrosshair(direction = "both") %>%
+    dygraphs::dyRangeSelector(
+      retainDateWindow = as.logical(config$dygraph$retainDateWindow)
+      ) %>%
+    dygraphs::dyCrosshair(direction = config$dygraph$direction) %>%
     dygraphs::dyLegend(
       labelsDiv = "dygraph_legend",
-      labelsSeparateLines = TRUE,
-      hideOnMouseOut = FALSE
+      labelsSeparateLines = as.logical(config$dygraph$labelsSeparateLines),
+      hideOnMouseOut = as.logical(config$dygraph$hideOnMouseOut)
     ) %>%
-    dygraphs::dyRoller(rollPeriod = 1) %>%
+    dygraphs::dyRoller(rollPeriod = config$dygraph$rollPeriod) %>%
     dygraphs::dyOptions(
-      axisLineWidth = 1.5,
-      # useDataTimezone = TRUE,
-      fillGraph = FALSE,
-      fillAlpha = 0.1,
-      drawGrid = TRUE,
-      rightGap = 40
+      axisLineWidth = config$dygraph$axisLineWidth,
+      useDataTimezone = as.logical(config$dygraph$useDataTimezone),
+      fillGraph = as.logical(config$dygraph$fillGraph),
+      fillAlpha = config$dygraph$fillAlpha,
+      drawGrid = as.logical(config$dygraph$drawGrid),
+      rightGap = config$dygraph$rightGap
     ) %>%
-    dygraphs::dyAxis("y", label = "pressure [barg]")
+    dygraphs::dyAxis("y", label = config$dygraph$y_label)
   return(graph)
 }
 
@@ -72,7 +74,7 @@ create_dygraph <- function(time_series, config) {
 # Args:
 #   dygraph (dygraph): parent dygraph
 #   time_series (xts): pressure time series
-#   config (list): settings froma  json config file
+#   config (list): settings from the json config file
 # Returns:
 #   (dygraph): dygraph with configured dySeries
 configure_dyseries <- function(dygraph, time_series, config) {

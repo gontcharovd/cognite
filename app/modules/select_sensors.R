@@ -4,9 +4,10 @@
 #
 # Args:
 #   id (character): used to specify the Shiny module namespace
+#   config (list): config.json file data
 # Returns:
 #   Shiny selectizeInput
-sensor_select_ui <- function(id) {
+sensor_select_ui <- function(id, config) {
   ns <- shiny::NS(id)
   query_sensors <- "
     SELECT DISTINCT
@@ -16,19 +17,23 @@ sensor_select_ui <- function(id) {
     ORDER BY
       sensor_name;
     "
+  # execute_query sourced from functions.R
   sensor_choices <- execute_query(query_sensors)$sensor_name
-  return(
-    shinyWidgets::pickerInput(
+  picker_input <- shinyWidgets::pickerInput(
       ns("selectize"),
-      label = h4("Sensors"),
+      label = h4(config$sensors$label),
+      # hard-coded variables below should not be changed
+      # max one sensor for each of two groups to calculate
+      # a valid pressure diff
       choices = list(
         First = sensor_choices,
         Second = sensor_choices
       ),
       multiple = TRUE,
+      selected = NULL,
       options =  list("max-options-group" = 1)
-    )
   )
+  return(picker_input)
 }
 
 # Shiny module server function for date selection.

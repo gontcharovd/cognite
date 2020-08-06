@@ -6,18 +6,28 @@
 #   sensor (character): sensor name
 #   coord (character): sensor key in config.json
 #   config (list): config.json file data
+# Returns:
+#   (numeric): x, y or radius of a circle that highlights a sensor
 get_coord <- function(sensor, coord, config) {
-  eval(
+  coord <- eval(
     substitute(
       config$sensors$sensor_name$coord,
       list(sensor_name = sensor, coord = coord)
     )
   )
+  return(coord)
 }
 
 # Assemble a list that can be rendered to an image.
 #
 # Args:
+#   input: not used
+#   output: not used
+#   session: not used
+#   sensors (character, reactive): selected sensors from `get_sensors` module
+#   config (list): settings from the json config file
+# Returns:
+#   (list, reactive): list containing the annotated image
 get_flowsheet_list <- function(input, output, session, sensors, config) {
   image_path <- config$flowsheet$image_path
   flowsheet_list <- reactive({

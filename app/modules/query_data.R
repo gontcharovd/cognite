@@ -28,6 +28,7 @@ get_sensor_data <- function(input, output, session, dates, sensors) {
           add_quotes(dates()[2]), ";
         "
       )
+      # execute_query sourced from functions.R
       sensor_data <- execute_query(query_data)
       data.table::setDT(sensor_data)
     }

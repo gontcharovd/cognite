@@ -6,25 +6,25 @@
 #   id (character) used to specify the Shiny module namespace
 # Returns:
 #   Shiny dateRangeInput
-date_range_ui <- function(id) {
+date_range_ui <- function(id, config = config) {
   ns <- shiny::NS(id)
   query_min <- "SELECT MIN(timestamp) FROM compressor_pressure;"
   query_max <- "SELECT MAX(timestamp) FROM compressor_pressure;"
+  # execute_query sourced from functions.R
   date_min <- as.Date(execute_query(query_min)$min)
   date_max <- as.Date(execute_query(query_max)$max)
-  return(
-    shiny::dateRangeInput(
+  date_range_input <- shiny::dateRangeInput(
       ns("date_range"),
-      label = h4("Date"),
-      separator = "to",
-      language = "en",
-      weekstart = 1,
-      start = date_max - lubridate::days(7),
+      label = h4(config$dates$label),
+      separator = config$dates$separator,
+      language = config$dates$language,
+      weekstart = config$dates$weekstart,
+      start = date_max - lubridate::days(config$dates$start_offset_days),
       end = date_max,
       min = date_min,
       max = date_max
     )
-  )
+  return(date_range_input)
 }
 
 # Shiny module server function for date selection.

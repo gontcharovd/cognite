@@ -10,6 +10,10 @@ app_dir <- file.path(
   "cognite",
   "app"
 )
+
+config_path <- file.path(app_dir, "input", "config.json")
+config <- jsonlite::read_json(file.path(app_dir, "input", "config.json"))
+ 
 source_files <- c(
   file.path(app_dir, "functions.R"),
   file.path(app_dir, "modules", "select_dates.R"),
@@ -23,31 +27,36 @@ sapply(source_files, source)
 ui <- shinydashboard::dashboardPage(
   shinydashboard::dashboardHeader(),
   shinydashboard::dashboardSidebar(
-    date_range_ui("date_selection"),
-    sensor_select_ui("sensor_selection")
+    date_range_ui("date_selection", config = config),
+    sensor_select_ui("sensor_selection", config = config)
   ),
   shinydashboard::dashboardBody(
     shiny::column(
       shinydashboard::box(
         dygraphs::dygraphOutput("pressure_dygraph"),
-        width = NULL,
-        height = 500,
-        solidHeader = TRUE
+        title = config$dygraph$box$title,
+        footer = config$dygraph$box$footer,
+        height = config$dygraph$box$height,
+        width = config$dygraph$box$width
       ),
       shinydashboard::box(
-        title = "Legend",
-        shiny::textOutput("dygraph_legend")
-      ), width = 9
+        shiny::textOutput("dygraph_legend"),
+        title = config$legend$box$title,
+        height = config$legend$box$height,
+        width = config$legend$box$width
+      ),
+      width = config$columns$left$width
     ),
     shiny::column(
       shinydashboard::box(
-        title = "Flowsheet",
         shiny::imageOutput("flowsheet"),
-        width = 300,
-        height = 500
-      ), width = 3
+        title = config$flowsheet$box$title,
+        height = config$flowsheet$box$height,
+        width = config$flowsheet$box$width
+      ),
+      width = config$columns$right$width
     )
-  )
+  ), skin = config$dashboard$skin
 )
 
 # Shiny server function.
@@ -55,9 +64,7 @@ ui <- shinydashboard::dashboardPage(
 # Args:
 #   input: not used
 #   output: passes rendered dygraph, flowsheet and legend to UI
-#   dir (character): full path to the app directory
-server <- function(input, output, dir = app_dir) {
-  config <- jsonlite::read_json(file.path(dir, "input", "config.json"))
+server <- function(input, output) {
   dates <- shiny::callModule(get_dates, "date_selection")
   sensors <- shiny::callModule(get_sensors, "sensor_selection")
   sensor_data <- shiny::callModule(
