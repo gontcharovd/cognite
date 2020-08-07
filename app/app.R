@@ -31,11 +31,11 @@ ui <- shinydashboard::dashboardPage(
     sensor_select_ui("sensor_selection", config = config)
   ),
   shinydashboard::dashboardBody(
+    dashboardthemes::shinyDashboardThemes(theme = config$dashboard$theme),
     shiny::column(
       shinydashboard::box(
         dygraphs::dygraphOutput("pressure_dygraph"),
         title = config$dygraph$box$title,
-        footer = config$dygraph$box$footer,
         height = config$dygraph$box$height,
         width = config$dygraph$box$width
       ),
@@ -56,7 +56,7 @@ ui <- shinydashboard::dashboardPage(
       ),
       width = config$columns$right$width
     )
-  ), skin = config$dashboard$skin
+  )
 )
 
 # Shiny server function.

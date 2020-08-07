@@ -1,6 +1,6 @@
 {
   "dashboard": {
-    "skin": "yellow"
+    "theme": "grey_light"
   },
   "columns": {
     "left": {
@@ -26,7 +26,6 @@
     "y_label": "Pressure [barg]",
     "box": {
       "title": "Compressor sensor pressure",
-      "footer": "All timestamps in utc" ,
       "height": 500,
       "width": "auto" 
     }
@@ -39,70 +38,70 @@
     }
   },
   "flowsheet": {
-    "height": 270, 
-    "width": 270 ,
+    "height": 265, 
+    "width": 265 ,
     "alt": "",
     "image_path": "/home/gontcharovd/code/personal_projects/cognite/app/input/compressor_flowsheet.png",
     "tmpdir": "/home/gontcharovd/code/personal_projects/cognite/app/input",
     "box": {
       "title": "Flowsheet",
       "height": 333,
-      "width": 150
+      "width": 160
     }
   },
 	"sensors": {
     "label": "Sensors",
 		"23-PT-92531": {
-		  "color": "red",
+		  "color": "#1B9E77",
 			"label": "Pressure 23-PT-92531 [barg]",
       "x": 388,
       "y": 302,
       "radius": 38
 		},
 		"23-PT-92532": {
-		  "color": "green",
+		  "color": "#D95F02",
 			"label": "Pressure 23-PT-92532 [barg]",
       "x": 435,
       "y": 566,
       "radius": 38
 		},
 	 "23-PT-92535": {
-		  "color": "blue",
+		  "color": "#7570B3",
 			"label": "Pressure 23-PT-92535 [barg]",
       "x": 388,
       "y": 444,
       "radius": 38
 		},
    "23-PT-92536": {
-		  "color": "purple",
+		  "color": "#66A61E",
 			"label": "Pressure 23-PT-92536 [barg]",
       "x": 953,
       "y": 273,
       "radius": 38
 		},
 		"23-PT-92537": {
-		  "color": "black",
+		  "color": "#E6AB02",
 			"label": "Pressure 23-PT-92537 [barg]",
       "x": 953,
       "y": 106,
       "radius": 38
 		},
 		"23-PT-92539": {
-		  "color": "cyan",
+		  "color": "#A6761D",
 			"label": "Pressure 23-PT-92539 [barg]",
       "x": 1125,
       "y": 566,
       "radius": 38
 		},
 		"23-PT-92540": {
-		  "color": "orange",
+		  "color": "#666666",
 			"label": "Pressure 23-PT-92540 [barg]",
       "x": 388,
       "y": 184,
       "radius": 38
 		},
 		"pressure_delta": {
-		  "color": "brown",
+		  "color": "red",
 			"label": "Pressure Delta [barg]"
 		}
   },
