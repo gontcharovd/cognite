@@ -8,6 +8,7 @@ app_dir <- file.path(
   "code",
   "personal_projects",
   "cognite",
+  "dashboard",
   "app"
 )
 
