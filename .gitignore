@@ -1,6 +1,6 @@
 tags
-*.swo
 *.swp
+*.swo
 .env
 tmp/
 *.pyc
