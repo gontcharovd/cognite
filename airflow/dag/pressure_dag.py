@@ -1,6 +1,6 @@
 """Apache Airflow Data Pipeline.
 
-Query data through the Cognite Python SDK and write to an SQL file.
+Query data through the Cognite Python SDK and write to an SQL file
 """
 
 import os
@@ -36,7 +36,7 @@ OUTPUT_FILE = 'postgres_query.sql'
 
 dag = DAG(
     'compressor_pressure',
-    start_date=datetime(2020, 7, 9),
+    start_date=datetime(2020, 5, 1),
     schedule_interval='@daily',
     template_searchpath=OUTPUT_PATH,
     max_active_runs=1,
@@ -145,4 +145,22 @@ write_to_postgres = PostgresOperator(
     dag=dag
 )
 
-get_sensor_data >> write_to_postgres
+delete_old_records = PostgresOperator(
+    task_id='delete_old_records',
+    postgres_conn_id='cognite',
+    sql="DELETE FROM compressor_pressure \
+         WHERE timestamp < DATE(CURRENT_DATE - INTERVAL '90 DAYS');",
+    dag=dag
+)
+
+recover_disk_space = PostgresOperator(
+    task_id='recover_disk_space',
+    postgres_conn_id='cognite',
+    sql='VACUUM (VERBOSE, ANALYZE) compressor_pressure;',
+    # autocommit because VACUUM can't run
+    # inside a transaction block
+    autocommit=True,
+    dag=dag
+)
+
+get_sensor_data >> write_to_postgres >> delete_old_records >> recover_disk_space
