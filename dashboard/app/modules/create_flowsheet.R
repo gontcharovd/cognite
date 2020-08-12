@@ -28,8 +28,9 @@ get_coord <- function(sensor, coord, config) {
 #   config (list): settings from the json config file
 # Returns:
 #   (list, reactive): list containing the annotated image
-get_flowsheet_list <- function(input, output, session, sensors, config) {
-  image_path <- config$flowsheet$image_path
+get_flowsheet_list <- function(input, output, session, sensors, config, app_dir) {
+  image_path <- file.path(app_dir, "input", "compressor_flowsheet.png")
+  tmpdir <- file.path(app_dir, "input")
   flowsheet_list <- reactive({
     image <- magick::image_read(image_path)
     image_draw <- magick::image_draw(image)
@@ -51,7 +52,7 @@ get_flowsheet_list <- function(input, output, session, sensors, config) {
     dev.off()
     tmpfile <- magick::image_write(
       image_draw,
-      tempfile(fileext = ".png", tmpdir = config$flowsheet$tmpdir),
+      tempfile(fileext = ".png", tmpdir = tmpdir),
       format = "png"
     )
     flowsheet_list <- list(

@@ -41,8 +41,6 @@
     "height": 265, 
     "width": 265 ,
     "alt": "",
-    "image_path": "/home/gontcharovd/code/personal_projects/cognite/dashboard/app/input/compressor_flowsheet.png",
-    "tmpdir": "/home/gontcharovd/code/personal_projects/cognite/dashboard/app/input",
     "box": {
       "title": "Flowsheet",
       "height": 333,

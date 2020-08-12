@@ -1,26 +1,21 @@
-FROM rocker/r-base:3.6.3
+FROM rocker/shiny:3.6.3
 
-# needed for RPostgreSQL
 RUN apt update 
-RUN apt install -y libpq-dev
-RUN apt install -y unixodbc-dev
-RUN apt install -y libcurl4-openssl-dev
+RUN apt install -y libcurl4-openssl-dev libmagick++-dev libpq-dev unixodbc-dev
 
-# I need to install the Postgres ODBC driver as well
-
-ENV RENV_VERSION 0.11.0-23
-RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))"
-RUN R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
+RUN R -e "install.packages('renv', version = '0.11.0')"
 
 WORKDIR /home/dashboard 
 COPY renv.lock .
-RUN R -e 'renv::restore()'
+# RUN R -e "renv::init(bare = TRUE)"
+RUN R -e "renv::restore()"
 
-COPY .Rprofile .
-COPY app app
+# it would be better to clone the app from GitHub
+COPY app .
 
-EXPOSE 5000
+ENV APP_DIR=/home/dashboard/app
 
-# CMD R -e 'shiny::runApp('app/app.R', port="5000")'
+EXPOSE 3838 5432
 
+# CMD R -e "shiny::runApp('app/app.R', host = '0.0.0.0', port = 3838)"
 CMD tail -f /dev/null

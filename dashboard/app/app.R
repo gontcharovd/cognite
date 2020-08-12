@@ -1,16 +1,7 @@
 # Shiny dashboard app
 # This file sources `functions.R` and 5 Shiny modules
 
-app_dir <- file.path(
-  "/",
-  "home",
-  "gontcharovd",
-  "code",
-  "personal_projects",
-  "cognite",
-  "dashboard",
-  "app"
-)
+app_dir <- Sys.getenv("APP_DIR")
 
 config_path <- file.path(app_dir, "input", "config.json")
 config <- jsonlite::read_json(file.path(app_dir, "input", "config.json"))
@@ -85,7 +76,8 @@ server <- function(input, output) {
     get_flowsheet_list,
     "flowsheet",
     sensors = sensors,
-    config = config
+    config = config,
+    app_dir = app_dir
   )
   output$flowsheet <- shiny::renderImage({
     flowsheet_list()}, deleteFile = TRUE
