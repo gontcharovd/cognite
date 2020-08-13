@@ -22,15 +22,7 @@ SENSOR_NAMES = [
     '23-PT-92539',
     '23-PT-92540'
 ]
-OUTPUT_PATH = os.path.join(
-    '/',
-    'home',
-    'gontcharovd',
-    'code',
-    'personal_projects',
-    'cognite',
-    'tmp'
-)
+OUTPUT_PATH = os.environ.get('TMP_PATH')
 OUTPUT_FILE = 'postgres_query.sql'
 
 
