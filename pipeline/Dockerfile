@@ -1,7 +1,9 @@
 FROM python:3.8
 
 RUN apt update
-RUN apt install -y python3-pip python3-venv
+RUN apt install -y python3-pip python3-venv supervisor
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR  /home/pipeline
 
@@ -18,8 +20,7 @@ ENV TMP_PATH=/home/pipeline/tmp
 ENV AIRFLOW_HOME=/home/pipeline/airflow
 RUN airflow initdb
 COPY dag/pressure_dag.py airflow/dags/pressure_dag.py
-COPY .env .
 
 EXPOSE 8080
 
-CMD tail -f /dev/null
+CMD ["/usr/bin/supervisord"] 

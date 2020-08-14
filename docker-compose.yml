@@ -10,6 +10,7 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PWD=${DB_PWD}
+    container_name: dashboard_container
   pipeline:
     image: pipeline_image
     ports:
@@ -17,9 +18,11 @@ services:
       - "5432:5432"
     network_mode: host
     environment:
+      - AIRFLOW_CONN_COGNITE=${AIRFLOW_CONN_COGNITE}
       - COGNITE_API_KEY=${COGNITE_API_KEY}
       - COGNITE_CLIENT_NAME=${COGNITE_CLIENT_NAME}
       - COGNITE_PROJECT=${COGNITE_PROJECT}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PWD=${DB_PWD}
+    container_name: pipeline_container

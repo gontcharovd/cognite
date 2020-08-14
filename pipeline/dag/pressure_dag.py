@@ -6,7 +6,6 @@ Query data through the Cognite Python SDK and write to an SQL file
 import os
 import pandas as pd
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
 from cognite.client import CogniteClient
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -38,8 +37,6 @@ dag = DAG(
 
 def _get_cognite_client():
     """Authenticate and return Cognite client. """
-    assert os.path.exists('.env')
-    load_dotenv()
     client = CogniteClient()
     assert client.login.status().logged_in is True
     return client
