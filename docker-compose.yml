@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  dashboard:
+    image: dashboard_image
+    ports:
+      - "3838:3838"
+    network_mode: host
+  pipeline:
+    image: airflow_image
+    ports:
+      - "8080:8080"
+      - "5432:5432"
+    network_mode: host

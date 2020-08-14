@@ -9,11 +9,11 @@
 execute_query <- function(query) {
   con <- DBI::dbConnect(
      RPostgres::Postgres(),
-     dbname = "cognite",
+     dbname = Sys.getenv("DB_NAME"),
      host = "localhost",
      port = 5432,
-     user = Sys.getenv("USER"),
-     password = Sys.getenv("PWD")
+     user = Sys.getenv("DB_USER"),
+     password = Sys.getenv("DB_PWD")
   )
   result <- DBI::dbGetQuery(con, query)
   DBI::dbDisconnect(con)
