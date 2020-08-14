@@ -7,7 +7,6 @@
 # Returns:
 #   (dataframe): the result of the query
 execute_query <- function(query) {
-  dotenv::load_dot_env()
   con <- DBI::dbConnect(
      RPostgres::Postgres(),
      dbname = "cognite",

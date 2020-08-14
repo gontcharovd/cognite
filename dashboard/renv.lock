@@ -114,13 +114,6 @@
       "Repository": "CRAN",
       "Hash": "f697db7d92b7028c4b3436e9603fb636"
     },
-    "dotenv": {
-      "Package": "dotenv",
-      "Version": "1.0.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "399c7c43dc639b7ad87add30baec21f1"
-    },
     "dygraphs": {
       "Package": "dygraphs",
       "Version": "1.1.1.6",
