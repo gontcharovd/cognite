@@ -41,8 +41,6 @@ sensor_select_ui <- function(id, config) {
 # Returns:
 #   (character): vector of two dates
 get_sensors <- function(input, output, session) {
-  shinyjs::useShinyjs()
-  shiny::onFlush(function() {shinyjs::reset("selectize")})
   selected_sensors <- reactive({
     input$selectize
   })
