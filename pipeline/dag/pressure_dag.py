@@ -1,6 +1,6 @@
 """Apache Airflow Data Pipeline.
 
-Query data through the Cognite Python SDK and write to an SQL file
+Query data through the Cognite Python SDK and write to a PostgreSQL database
 """
 
 import os
