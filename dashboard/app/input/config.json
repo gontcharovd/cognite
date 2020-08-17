@@ -1,6 +1,6 @@
 {
   "dashboard": {
-    "theme": "grey_light"
+    "theme": "flat_red"
   },
   "columns": {
     "left": {
@@ -12,28 +12,32 @@
   },
   "dygraph": {
     "main": "",
-    "retaindatewindow": "true",
+    "height": 940,
+    "width": 1650,
+    "fillcolor": "#4c8cc0",
+    "strokecolor": "",
+    "retaindatewindow": "TRUE",
     "direction": "both",
-    "labelsseparatelines": "true",
-    "hideonmouseout": "false",
+    "labelsseparatelines": "TRUE",
+    "hideonmouseout": "FALSE",
     "rollperiod": 1,
     "axislinewidth": 1.5,
-    "usedatatimezone": "true",
-    "fillGraph": "false",
+    "usedatatimezone": "TRUE",
+    "fillGraph": "FALSE",
     "fillAlpha": 0.1,
     "drawgrid": "true",
     "rightgap": 40,
     "y_label": "Pressure [barg]",
     "box": {
-      "title": "Compressor sensor pressure",
-      "height": 500,
+      "title": "Compressor Sensor Pressure",
+      "height": 1000,
       "width": "auto" 
     }
   },
   "legend": {
     "width": 570,
     "box": {
-      "title": "Pressure legend",
+      "title": "Pressure Legend",
       "height": 145,
       "width": 170
     }
@@ -43,64 +47,70 @@
     "width": 300 ,
     "alt": "",
     "box": {
-      "title": "Flowsheet",
-      "height": 328,
+      "title": "Compressor Flowsheet",
+      "height": 362,
       "width": 160
+    }
+  },
+  "menu": {
+    "box": {
+      "height": 452,
+      "width": 300
     }
   },
 	"sensors": {
     "label": "Sensors",
 		"23-PT-92531": {
-		  "color": "#1B9E77",
+		  "color": "#006270",
 			"label": "Pressure 23-PT-92531 [barg]",
       "x": 388,
       "y": 302,
       "radius": 38
 		},
 		"23-PT-92532": {
-		  "color": "#D95F02",
+		  "color": "#003853",
 			"label": "Pressure 23-PT-92532 [barg]",
       "x": 435,
       "y": 566,
       "radius": 38
 		},
 	 "23-PT-92535": {
-		  "color": "#7570B3",
+		  "color": "#0478a1",
 			"label": "Pressure 23-PT-92535 [barg]",
       "x": 388,
       "y": 444,
       "radius": 38
 		},
    "23-PT-92536": {
-		  "color": "#66A61E",
+		  "color": "#04aed9",
 			"label": "Pressure 23-PT-92536 [barg]",
       "x": 953,
       "y": 273,
       "radius": 38
 		},
 		"23-PT-92537": {
-		  "color": "#E6AB02",
+		  "color": "#5c83a0",
 			"label": "Pressure 23-PT-92537 [barg]",
       "x": 953,
       "y": 106,
       "radius": 38
 		},
 		"23-PT-92539": {
-		  "color": "#A6761D",
+		  "color": "#9ebfe0",
 			"label": "Pressure 23-PT-92539 [barg]",
       "x": 1125,
       "y": 566,
       "radius": 38
 		},
 		"23-PT-92540": {
-		  "color": "#666666",
+		  "color": "#64a4ad",
 			"label": "Pressure 23-PT-92540 [barg]",
       "x": 388,
       "y": 184,
       "radius": 38
 		},
 		"pressure_delta": {
-		  "color": "red",
+		  "color": "#CF395C",
 			"label": "Pressure Delta [barg]"
 		}
   },

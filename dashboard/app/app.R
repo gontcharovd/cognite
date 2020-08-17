@@ -17,18 +17,22 @@ source_files <- c(
 sapply(source_files, source)
 
 ui <- shinydashboard::dashboardPage(
-  shinydashboard::dashboardHeader(),
-  shinydashboard::dashboardSidebar(
-    collapsed = TRUE,
-    shinydashboard::sidebarMenu(),
-    date_range_ui("date_selection", config = config),
-    sensor_select_ui("sensor_selection", config = config)
+  shinydashboard::dashboardHeader(
+    title = tags$a(
+      href="https://openindustrialdata.com/get-started/",
+      tags$img(src = "logo.jpeg", height = 58)
+    )
   ),
+  shinydashboard::dashboardSidebar(disable=TRUE),
   shinydashboard::dashboardBody(
     dashboardthemes::shinyDashboardThemes(theme = config$dashboard$theme),
     shiny::column(
       shinydashboard::box(
-        dygraphs::dygraphOutput("pressure_dygraph"),
+        dygraphs::dygraphOutput(
+          "pressure_dygraph",
+          height = config$dygraph$height,
+          width = config$dygraph$width
+        ),
         title = config$dygraph$box$title,
         height = config$dygraph$box$height,
         width = config$dygraph$box$width
@@ -38,7 +42,7 @@ ui <- shinydashboard::dashboardPage(
     shiny::column(
       shinydashboard::box(
         shiny::imageOutput("flowsheet"),
-        # title = config$flowsheet$box$title,
+        title = config$flowsheet$box$title,
         height = config$flowsheet$box$height,
         width = config$flowsheet$box$width
       ),
@@ -47,6 +51,12 @@ ui <- shinydashboard::dashboardPage(
         title = config$legend$box$title,
         height = config$legend$box$height,
         width = config$legend$box$width
+      ),
+      shinydashboard::box(
+        date_range_ui("date_selection", config = config),
+        sensor_select_ui("sensor_selection", config = config),
+        height = config$menu$box$height,
+        width = config$menu$box$width
       ),
       width = config$columns$right$width
     )

@@ -45,10 +45,15 @@ get_pressure_dygraph <- function(input, output, session, sensor_data, config) {
 # Returns:
 #   (dygraph): the configured dygraph
 create_dygraph <- function(time_series, config) {
-  graph <- dygraphs::dygraph(time_series, main = config$dygraph$main) %>%
+  graph <- dygraphs::dygraph(
+      data = time_series,
+      main = config$dygraph$main
+    ) %>%
     configure_dyseries(time_series, config) %>%
     dygraphs::dyRangeSelector(
-      retainDateWindow = as.logical(config$dygraph$retainDateWindow)
+      retainDateWindow = as.logical(config$dygraph$retainDateWindow),
+      fillColor = config$dygraph$fillcolor,
+      strokeColor = config$dygraph$strokecolor,
       ) %>%
     dygraphs::dyCrosshair(direction = config$dygraph$direction) %>%
     dygraphs::dyLegend(

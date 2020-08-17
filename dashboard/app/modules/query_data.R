@@ -13,7 +13,7 @@
 get_sensor_data <- function(input, output, session, dates, sensors) {
   sensor_data <- reactive({
     sensor_data <- NULL
-    if (length(sensors()) > 0) {
+    if (length(sensors()) > 0 & dates()[1] <= dates()[2]) {
       query_data  <- paste0("
         SELECT
           timestamp
