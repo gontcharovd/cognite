@@ -31,19 +31,20 @@
     }
   },
   "legend": {
+    "width": 570,
     "box": {
-      "title": "Legend",
-      "height": 150,
-      "width": 150
+      "title": "Pressure legend",
+      "height": 145,
+      "width": 170
     }
   },
   "flowsheet": {
-    "height": 265, 
-    "width": 265 ,
+    "height": 300, 
+    "width": 300 ,
     "alt": "",
     "box": {
       "title": "Flowsheet",
-      "height": 333,
+      "height": 328,
       "width": 160
     }
   },

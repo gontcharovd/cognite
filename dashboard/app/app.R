@@ -19,6 +19,8 @@ sapply(source_files, source)
 ui <- shinydashboard::dashboardPage(
   shinydashboard::dashboardHeader(),
   shinydashboard::dashboardSidebar(
+    collapsed = TRUE,
+    shinydashboard::sidebarMenu(),
     date_range_ui("date_selection", config = config),
     sensor_select_ui("sensor_selection", config = config)
   ),
@@ -36,7 +38,7 @@ ui <- shinydashboard::dashboardPage(
     shiny::column(
       shinydashboard::box(
         shiny::imageOutput("flowsheet"),
-        title = config$flowsheet$box$title,
+        # title = config$flowsheet$box$title,
         height = config$flowsheet$box$height,
         width = config$flowsheet$box$width
       ),

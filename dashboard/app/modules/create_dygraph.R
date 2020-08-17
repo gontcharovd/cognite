@@ -52,6 +52,7 @@ create_dygraph <- function(time_series, config) {
       ) %>%
     dygraphs::dyCrosshair(direction = config$dygraph$direction) %>%
     dygraphs::dyLegend(
+      width = config$legend$width,
       labelsDiv = "dygraph_legend",
       labelsSeparateLines = as.logical(config$dygraph$labelsSeparateLines),
       hideOnMouseOut = as.logical(config$dygraph$hideOnMouseOut)

@@ -25,7 +25,7 @@ get_sensor_data <- function(input, output, session, dates, sensors) {
         WHERE
           sensor_name IN (", add_quotes(sensors()), ") AND
           timestamp BETWEEN ", add_quotes(dates()[1]), " AND ",
-          add_quotes(dates()[2]), ";
+          add_quotes(paste(dates()[2], "23:59:59")), ";
         "
       )
       # execute_query sourced from functions.R

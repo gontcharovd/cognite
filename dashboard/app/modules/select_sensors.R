@@ -25,13 +25,9 @@ sensor_select_ui <- function(id, config) {
       # hard-coded variables below should not be changed
       # max one sensor for each of two groups to calculate
       # a valid pressure diff
-      choices = list(
-        First = sensor_choices,
-        Second = sensor_choices
-      ),
+      choices = list( Choice = sensor_choices),
       multiple = TRUE,
-      selected = NULL,
-      options =  list("max-options-group" = 1)
+      options =  list("max-options-group" = 2)
   )
   return(picker_input)
 }
@@ -45,6 +41,8 @@ sensor_select_ui <- function(id, config) {
 # Returns:
 #   (character): vector of two dates
 get_sensors <- function(input, output, session) {
+  shinyjs::useShinyjs()
+  shiny::onFlush(function() {shinyjs::reset("selectize")})
   selected_sensors <- reactive({
     input$selectize
   })
