@@ -13,6 +13,4 @@ COPY app app
 
 ENV APP_DIR=/home/dashboard/app
 
-EXPOSE 3838 5432
-
 CMD R -e "shiny::runApp('app/app.R', host = '0.0.0.0', port = 3838)"

@@ -115,7 +115,7 @@
 		}
   },
   "dates": {
-    "label": "Date range",
+    "label": "Date Range",
     "separator": "to",
     "language": "en",
     "weekstart": 1,

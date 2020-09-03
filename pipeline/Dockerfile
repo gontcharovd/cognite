@@ -21,6 +21,4 @@ ENV AIRFLOW_HOME=/home/pipeline/airflow
 RUN airflow initdb
 COPY dag/pressure_dag.py airflow/dags/pressure_dag.py
 
-EXPOSE 8080
-
 CMD ["/usr/bin/supervisord"] 
