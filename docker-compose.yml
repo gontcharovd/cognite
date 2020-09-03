@@ -22,7 +22,4 @@ services:
       - COGNITE_API_KEY=${COGNITE_API_KEY}
       - COGNITE_CLIENT_NAME=${COGNITE_CLIENT_NAME}
       - COGNITE_PROJECT=${COGNITE_PROJECT}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PWD=${DB_PWD}
     container_name: pipeline_container
