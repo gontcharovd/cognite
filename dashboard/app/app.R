@@ -18,13 +18,17 @@ sapply(source_files, source)
 
 ui <- shinydashboard::dashboardPage(
   shinydashboard::dashboardHeader(title = config$dashboard$title),
-  shinydashboard::dashboardSidebar(
-    shiny::includeMarkdown("input/app_text.md"),
-    width = "15vmax",
-    collapsed = TRUE
-  ),
+  shinydashboard::dashboardSidebar(disable = TRUE),
   shinydashboard::dashboardBody(
     dashboardthemes::shinyDashboardThemes(theme = config$dashboard$theme),
+        shinyWidgets::dropdownButton(
+          date_range_ui("date_selection", config = config),
+          circle = FALSE, icon = icon("calendar"), width = "300px"
+        ),
+        shinyWidgets::dropdownButton(
+          shiny::includeMarkdown("input/app_text.md"),
+          circle = FALSE, icon = icon("info"), width = "300px"
+        ),
     shiny::column(
       shinydashboard::box(
         dygraphs::dygraphOutput(
@@ -44,16 +48,16 @@ ui <- shinydashboard::dashboardPage(
           shiny::imageOutput("flowsheet", height = "100%", width = "100%"),
           style = "height: 30vmin; width: 30vmin;"
         ),
+        sensor_select_ui("sensor_selection", config = config),
         title = config$flowsheet$box$title,
         height = config$flowsheet$box$height,
         width = config$flowsheet$box$width
       ),
-      shinydashboard::box(
-        date_range_ui("date_selection", config = config),
-        sensor_select_ui("sensor_selection", config = config),
-        height = config$menu$box$height,
-        width = config$menu$box$width
-      ),
+      # shinydashboard::box(
+      #   sensor_select_ui("sensor_selection", config = config),
+      #   height = config$menu$box$height,
+      #   width = config$menu$box$width
+      # ),
       shinydashboard::box(
         shiny::textOutput("dygraph_legend"),
         title = config$legend$box$title,
