@@ -1,6 +1,7 @@
 {
   "dashboard": {
-    "theme": "flat_red"
+    "theme": "flat_red",
+    "title": "Pressure dashboard"
   },
   "columns": {
     "left": {
@@ -12,8 +13,8 @@
   },
   "dygraph": {
     "main": "",
-    "height": 1100,
-    "width": 2000,
+    "height": "85vmin",
+    "width": "auto",
     "fillcolor": "#4c8cc0",
     "strokecolor": "",
     "retaindatewindow": "TRUE",
@@ -30,39 +31,39 @@
     "y_label": "Pressure [barg]",
     "box": {
       "title": "Compressor sensor pressure",
-      "height": 1200,
+      "height": "auto",
       "width": "auto" 
     }
   },
   "legend": {
-    "width": 570,
+    "width": "auto",
     "box": {
       "title": "Pressure legend",
-      "height": 155,
-      "width": 170
+      "height": "auto",
+      "width": "auto"
     }
   },
   "flowsheet": {
-    "height": 370, 
-    "width": 370 ,
+    "height": "93%", 
+    "width": "auto",
     "alt": "",
     "box": {
       "title": "Compressor flowsheet",
-      "height": 442,
-      "width": 160
+      "height": "auto",
+      "width": "auto"
     }
   },
   "menu": {
     "box": {
-      "height": 220,
-      "width": 300
+      "height": "auto",
+      "width": "auto"
     }
   },
   "text": {
     "box": {
 			"title": "About this application",
-      "height": 322,
-      "width": 300
+      "height": "auto",
+      "width": "auto"
     }
   },
 	"sensors": {

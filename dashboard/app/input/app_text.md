@@ -9,5 +9,5 @@ Data is obtained from [Cognite Open Industrial Data](https://openindustrialdata.
 
 This application is developed in R and Shiny and is deployed on a virtual machine on Google Cloud.
 
-MIT License <br>
+Distributed under the MIT License <br>
 Copyright (c) 2020 [Denis Gontcharov](https://gontcharov.dev)

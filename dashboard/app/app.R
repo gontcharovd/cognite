@@ -17,8 +17,12 @@ source_files <- c(
 sapply(source_files, source)
 
 ui <- shinydashboard::dashboardPage(
-  shinydashboard::dashboardHeader(title = "Pressure dashboard"),
-  shinydashboard::dashboardSidebar(disable=TRUE),
+  shinydashboard::dashboardHeader(title = config$dashboard$title),
+  shinydashboard::dashboardSidebar(
+    shiny::includeMarkdown("input/app_text.md"),
+    width = "15vmax",
+    collapsed = TRUE
+  ),
   shinydashboard::dashboardBody(
     dashboardthemes::shinyDashboardThemes(theme = config$dashboard$theme),
     shiny::column(
@@ -36,16 +40,13 @@ ui <- shinydashboard::dashboardPage(
     ),
     shiny::column(
       shinydashboard::box(
-        shiny::imageOutput("flowsheet"),
+        div(
+          shiny::imageOutput("flowsheet", height = "100%", width = "100%"),
+          style = "height: 30vmin; width: 30vmin;"
+        ),
         title = config$flowsheet$box$title,
         height = config$flowsheet$box$height,
         width = config$flowsheet$box$width
-      ),
-      shinydashboard::box(
-        shiny::textOutput("dygraph_legend"),
-        title = config$legend$box$title,
-        height = config$legend$box$height,
-        width = config$legend$box$width
       ),
       shinydashboard::box(
         date_range_ui("date_selection", config = config),
@@ -54,11 +55,20 @@ ui <- shinydashboard::dashboardPage(
         width = config$menu$box$width
       ),
       shinydashboard::box(
-        title = config$text$box$title,
-        shiny::includeMarkdown("input/app_text.md"),
-        height = config$text$box$height,
-        width = config$text$box$width
+        shiny::textOutput("dygraph_legend"),
+        title = config$legend$box$title,
+        height = config$legend$box$height,
+        width = config$legend$box$width
       ),
+      # shinydashboard::box(
+      #   title = config$text$box$title,
+      #   div(
+      #     style = 'overflow-y:scroll; height: 10vmin; width: auto;',
+      #     shiny::includeMarkdown("input/app_text.md")
+      #   ),
+      #   height = config$text$box$height,
+      #   width = config$text$box$width
+      # ),
       width = config$columns$right$width
     )
   )
