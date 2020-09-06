@@ -17,12 +17,7 @@ source_files <- c(
 sapply(source_files, source)
 
 ui <- shinydashboard::dashboardPage(
-  shinydashboard::dashboardHeader(
-    title = tags$a(
-      href="https://openindustrialdata.com/get-started/",
-      tags$img(src = "logo.jpeg", height = 58)
-    )
-  ),
+  shinydashboard::dashboardHeader(title = "Pressure dashboard"),
   shinydashboard::dashboardSidebar(disable=TRUE),
   shinydashboard::dashboardBody(
     dashboardthemes::shinyDashboardThemes(theme = config$dashboard$theme),
@@ -57,6 +52,12 @@ ui <- shinydashboard::dashboardPage(
         sensor_select_ui("sensor_selection", config = config),
         height = config$menu$box$height,
         width = config$menu$box$width
+      ),
+      shinydashboard::box(
+        title = config$text$box$title,
+        shiny::includeMarkdown("input/app_text.md"),
+        height = config$text$box$height,
+        width = config$text$box$width
       ),
       width = config$columns$right$width
     )

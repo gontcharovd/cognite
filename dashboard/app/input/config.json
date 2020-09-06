@@ -12,8 +12,8 @@
   },
   "dygraph": {
     "main": "",
-    "height": 940,
-    "width": 1650,
+    "height": 1100,
+    "width": 2000,
     "fillcolor": "#4c8cc0",
     "strokecolor": "",
     "retaindatewindow": "TRUE",
@@ -29,32 +29,39 @@
     "rightgap": 40,
     "y_label": "Pressure [barg]",
     "box": {
-      "title": "Compressor Sensor Pressure",
-      "height": 1000,
+      "title": "Compressor sensor pressure",
+      "height": 1200,
       "width": "auto" 
     }
   },
   "legend": {
     "width": 570,
     "box": {
-      "title": "Pressure Legend",
-      "height": 145,
+      "title": "Pressure legend",
+      "height": 155,
       "width": 170
     }
   },
   "flowsheet": {
-    "height": 300, 
-    "width": 300 ,
+    "height": 370, 
+    "width": 370 ,
     "alt": "",
     "box": {
-      "title": "Compressor Flowsheet",
-      "height": 362,
+      "title": "Compressor flowsheet",
+      "height": 442,
       "width": 160
     }
   },
   "menu": {
     "box": {
-      "height": 452,
+      "height": 220,
+      "width": 300
+    }
+  },
+  "text": {
+    "box": {
+			"title": "About this application",
+      "height": 322,
       "width": 300
     }
   },
@@ -115,11 +122,10 @@
 		}
   },
   "dates": {
-    "label": "Date Range",
+    "label": "Date range",
     "separator": "to",
     "language": "en",
     "weekstart": 1,
     "start_offset_days": 7
   }
 }
-
