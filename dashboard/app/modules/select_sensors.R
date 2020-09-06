@@ -21,13 +21,13 @@ sensor_select_ui <- function(id, config) {
   sensor_choices <- execute_query(query_sensors)$sensor_name
   picker_input <- shinyWidgets::pickerInput(
       ns("selectize"),
-      label = h4(config$sensors$label),
       # hard-coded variables below should not be changed
       # max one sensor for each of two groups to calculate
       # a valid pressure diff
       choices = list( Choice = sensor_choices),
       multiple = TRUE,
       options =  list("max-options-group" = 2)
+      # width = "fit",
   )
   return(picker_input)
 }

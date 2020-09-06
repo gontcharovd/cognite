@@ -5,15 +5,15 @@
   },
   "columns": {
     "left": {
-      "width": 10
+      "width": 9
     },
     "right": {
-      "width": 2
+      "width": 3
     }
   },
   "dygraph": {
     "main": "",
-    "height": "85vmin",
+    "height": "80vmin",
     "width": "auto",
     "fillcolor": "#4c8cc0",
     "strokecolor": "",
@@ -30,7 +30,6 @@
     "rightgap": 40,
     "y_label": "Pressure [barg]",
     "box": {
-      "title": "Compressor sensor pressure",
       "height": "auto",
       "width": "auto" 
     }
@@ -44,11 +43,11 @@
     }
   },
   "flowsheet": {
-    "height": "93%", 
+    "height": "94%", 
     "width": "auto",
     "alt": "",
     "box": {
-      "title": "Compressor flowsheet",
+      "title": "Pressure sensors",
       "height": "auto",
       "width": "auto"
     }
@@ -67,7 +66,6 @@
     }
   },
 	"sensors": {
-    "label": "Sensors",
 		"23-PT-92531": {
 		  "color": "#006270",
 			"label": "Pressure 23-PT-92531 [barg]",

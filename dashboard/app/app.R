@@ -17,26 +17,39 @@ source_files <- c(
 sapply(source_files, source)
 
 ui <- shinydashboard::dashboardPage(
-  shinydashboard::dashboardHeader(title = config$dashboard$title),
+  shinydashboard::dashboardHeader(
+    title = config$dashboard$title,
+    tags$li(
+    shinyWidgets::dropdownButton(
+        shiny::includeMarkdown("input/app_text.md"),
+        icon = icon("info"),
+        circle = FALSE,
+        size = "lg",
+        label = "About",
+        width = "20vmax",
+        right = TRUE
+      ),
+      class= "dropdown"
+    )
+  ),
   shinydashboard::dashboardSidebar(disable = TRUE),
   shinydashboard::dashboardBody(
     dashboardthemes::shinyDashboardThemes(theme = config$dashboard$theme),
-        shinyWidgets::dropdownButton(
-          date_range_ui("date_selection", config = config),
-          circle = FALSE, icon = icon("calendar"), width = "300px"
-        ),
-        shinyWidgets::dropdownButton(
-          shiny::includeMarkdown("input/app_text.md"),
-          circle = FALSE, icon = icon("info"), width = "300px"
-        ),
     shiny::column(
       shinydashboard::box(
+        shinyWidgets::dropdownButton(
+          date_range_ui("date_selection", config = config),
+          circle = FALSE,
+          size = "lg",
+          label = "Date range",
+          icon = icon("calendar")
+        ),
+      tags$br(),
         dygraphs::dygraphOutput(
           "pressure_dygraph",
           height = config$dygraph$height,
           width = config$dygraph$width
         ),
-        title = config$dygraph$box$title,
         height = config$dygraph$box$height,
         width = config$dygraph$box$width
       ),
@@ -46,33 +59,19 @@ ui <- shinydashboard::dashboardPage(
       shinydashboard::box(
         div(
           shiny::imageOutput("flowsheet", height = "100%", width = "100%"),
-          style = "height: 30vmin; width: 30vmin;"
+          style = "height: 48vmin; width: 48vmin;"
         ),
         sensor_select_ui("sensor_selection", config = config),
         title = config$flowsheet$box$title,
         height = config$flowsheet$box$height,
         width = config$flowsheet$box$width
       ),
-      # shinydashboard::box(
-      #   sensor_select_ui("sensor_selection", config = config),
-      #   height = config$menu$box$height,
-      #   width = config$menu$box$width
-      # ),
       shinydashboard::box(
         shiny::textOutput("dygraph_legend"),
         title = config$legend$box$title,
         height = config$legend$box$height,
         width = config$legend$box$width
       ),
-      # shinydashboard::box(
-      #   title = config$text$box$title,
-      #   div(
-      #     style = 'overflow-y:scroll; height: 10vmin; width: auto;',
-      #     shiny::includeMarkdown("input/app_text.md")
-      #   ),
-      #   height = config$text$box$height,
-      #   width = config$text$box$width
-      # ),
       width = config$columns$right$width
     )
   )
