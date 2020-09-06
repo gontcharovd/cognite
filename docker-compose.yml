@@ -22,4 +22,6 @@ services:
       - COGNITE_API_KEY=${COGNITE_API_KEY}
       - COGNITE_CLIENT_NAME=${COGNITE_CLIENT_NAME}
       - COGNITE_PROJECT=${COGNITE_PROJECT}
+    volumes:
+      - /var/log/supervisor-ccp-pipeline:/var/log/supervisor
     container_name: pipeline_container
