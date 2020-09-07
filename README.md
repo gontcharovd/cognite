@@ -1,7 +1,6 @@
 # Monitoring sensor data
 
-> Designing an automated data processing and visualization workflow
-
+Designing an automated data processing and visualization workflow
 
 ![](https://akerbp.com/wp-content/uploads/2016/09/1455710061745.jpg)
 
@@ -9,16 +8,14 @@
 
 Cognite AS, a Norwegian software company, recently launched the [Open Industrial Data Project](https://openindustrialdata.com/about/).
 It composes a live stream of real industrial data from Aker BP's Valhall oil platform in the North Sea.
-The data comes from the first stage compressor and consists of [^1]:
+The data comes from the first stage compressor and consists of:
 
 * timeseries
 * maintenance history
 * process and instrumentation diagrams
 
-![](/images/project/system_overview.png)
-
 The first stage compressor (23-KA-9101) is an electrically-driven, fixed-speed centrifugal compressor which receives gas from the separators at approximately 3 barg pressure.
-The gas is compressed to approximately 12 barg and flows through a pair of discharge coolers (23-HA-9114/9115) before entering the second stage of compression. [^2]
+The gas is compressed to approximately 12 barg and flows through a pair of discharge coolers (23-HA-9114/9115) before entering the second stage of compression.
 
 > "What is the typical difference between the input and output pressure of the compressor?"
 
@@ -26,21 +23,18 @@ The objective is to calculate and visualize the pressure difference across the c
 Pressure measurements from seven sensors installed around the compressor is available at a one-minute frequency.
 Every day new data is loaded and old date is deleted.
 
----
 ## Solution
 
 An application was developed that wllows to calculate and visualize the pressure difference between any two sensors.
 In addition, the location of selected sensors is highlighted in a flowchart.
 
-This exercise serves to demonstrate how a **reliable data processing architecture based on microservices** can be built using **open-source technology**.
+This exercise serves to demonstrate how a reliable data processing architecture based on microservices can be built using open-source technology.
 
----
 ## How to use the app
 
 The application is hosted on [Google Cloud Platform](https://cloud.google.com/) and the complete code is published on [GitHub](https://github.com/gontcharovd/cognite).
 Give the app a try by following this [link](http://34.89.171.53:3838/) or by navigatying to the address `34.89.171.53:3838` with your web browser.
 
----
 ## Architecture
 
 The data is made available through the [Cognite Python SDK](https://cognite-docs.readthedocs-hosted.com/projects/cognite-sdk-python/en/latest/). 
@@ -107,18 +101,13 @@ A JSON file allows to configure the entire app.
 ```
 Care was taken to design the dashboard to support a wide range of screen sizes.
 
----
 ## Documentation
 
-[Full documentation.]()
+[Full documentation.](https://github.com/gontcharovd/cognite/wiki)
 
----
 ## License
 
 Distributed under the MIT License <br>
-Copyright (c) 2020 Denis Gontcharov
+Copyright (c) 2020 [Denis Gontcharov](https://gontcharov.dev)
 
 ---
-
-[^1]: Cognite, *Open Industrial Data Project*, [about](https://openindustrialdata.com/about/)
-[^2]: Cognite, *open Industrial Data Project*, [system description](https://openindustrialdata.com/data/)
