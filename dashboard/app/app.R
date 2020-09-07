@@ -22,14 +22,14 @@ ui <- shinydashboard::dashboardPage(
     tags$li(
     shinyWidgets::dropdownButton(
         shiny::includeMarkdown("input/app_text.md"),
-        icon = icon("info"),
-        circle = FALSE,
-        size = "lg",
-        label = "About",
-        width = "20vmax",
-        right = TRUE
+        icon = icon(config$dropdown$info$icon),
+        circle = as.logical(config$dropdown$info$circle),
+        size = config$dropdown$info$size,
+        label = config$dropdown$info$label,
+        width = config$dropdown$info$width,
+        right = as.logical(config$dropdown$info$right)
       ),
-      class= "dropdown"
+      class = "dropdown"
     )
   ),
   shinydashboard::dashboardSidebar(disable = TRUE),
@@ -39,10 +39,10 @@ ui <- shinydashboard::dashboardPage(
       shinydashboard::box(
         shinyWidgets::dropdownButton(
           date_range_ui("date_selection", config = config),
-          circle = FALSE,
-          size = "lg",
-          label = "Date range",
-          icon = icon("calendar")
+          circle = config$dropdown$date_range$circle,
+          size = config$dropdown$date_range$size,
+          label = config$dropdown$date_range$label,
+          icon = icon(config$dropdown$date_range$icon)
         ),
       tags$br(),
         dygraphs::dygraphOutput(
@@ -58,8 +58,17 @@ ui <- shinydashboard::dashboardPage(
     shiny::column(
       shinydashboard::box(
         div(
-          shiny::imageOutput("flowsheet", height = "100%", width = "100%"),
-          style = "height: 48vmin; width: 48vmin;"
+          shiny::imageOutput(
+            "flowsheet",
+            height = config$flowsheet$div$height,
+            width = config$flowsheet$div$width
+          ),
+          style = paste(
+            "height:",
+            config$flowsheet$div$style_height,
+            "; width:",
+            config$flowsheet$div$style_width, ";"
+          )
         ),
         sensor_select_ui("sensor_selection", config = config),
         title = config$flowsheet$box$title,

@@ -5,8 +5,3 @@ CREATE TABLE compressor_pressure (
     pressure REAL,
     PRIMARY KEY (timestamp, asset_id)
 );
-
-VACUUM (VERBOSE, ANALYZE) compressor_pressure;
-
-DELETE FROM compressor_pressure
-WHERE timestamp < DATE(CURRENT_DATE - INTERVAL '3 months');

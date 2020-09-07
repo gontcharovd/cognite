@@ -11,6 +11,22 @@
       "width": 3
     }
   },
+  "dropdown": {
+    "info": {
+      "icon": "info",
+      "circle": "FALSE",
+      "size": "lg",
+      "label": "About",
+      "width": "20vmax",
+      "right": "TRUE"
+    },
+    "date_range": {
+      "icon": "info",
+      "circle": "FALSE",
+      "size": "lg",
+      "label": "Date range"
+    }
+  },
   "dygraph": {
     "main": "",
     "height": "80vmin",
@@ -50,19 +66,12 @@
       "title": "Pressure sensors",
       "height": "auto",
       "width": "auto"
-    }
-  },
-  "menu": {
-    "box": {
-      "height": "auto",
-      "width": "auto"
-    }
-  },
-  "text": {
-    "box": {
-			"title": "About this application",
-      "height": "auto",
-      "width": "auto"
+    },
+    "div": {
+      "height": "100%",
+      "width": "100%",
+      "style_height": "48vmin",
+      "style_width": "48vmin"
     }
   },
 	"sensors": {
