@@ -1,3 +1,13 @@
+# Return a list with the min and max date in the database.
+get_min_max_date <- function() {
+  query_min <- "SELECT MIN(timestamp) FROM compressor_pressure;"
+  query_max <- "SELECT MAX(timestamp) FROM compressor_pressure;"
+  date_min <- as.Date(execute_query(query_min)$min)
+  date_max <- as.Date(execute_query(query_max)$max)
+  dates <- list("min" = date_min, "max" = date_max)
+  return(dates)
+}
+
 # Shiny module that outputs date selection UI and selected dates.
 
 # Return a date range selector that find the database min and max date.
@@ -8,11 +18,9 @@
 #   Shiny dateRangeInput
 date_range_ui <- function(id, config = config) {
   ns <- shiny::NS(id)
-  query_min <- "SELECT MIN(timestamp) FROM compressor_pressure;"
-  query_max <- "SELECT MAX(timestamp) FROM compressor_pressure;"
-  # execute_query sourced from functions.R
-  date_min <- as.Date(execute_query(query_min)$min)
-  date_max <- as.Date(execute_query(query_max)$max)
+  dates <- get_min_max_date()
+  date_min <- dates[["min"]]
+  date_max <- dates[["max"]]
   date_range_input <- shiny::dateRangeInput(
       ns("date_range"),
       label = h4(config$dates$label),
@@ -35,7 +43,23 @@ date_range_ui <- function(id, config = config) {
 #   session not used
 # Returns:
 #   (character) vector of two selected dates
-get_dates <- function(input, output, session) {
+get_dates <- function(input, output, session, config = config) {
+  # update the date range every twelve hours with new data from the database
+  update_date_range <- reactiveTimer(1000 * 60 * 60 * 12)
+  observe({
+    update_date_range()
+    dates <- get_min_max_date()
+    date_min <- dates[["min"]]
+    date_max <- dates[["max"]]
+    shiny::updateDateRangeInput(
+      session,
+      "date_range",
+      start = date_max - lubridate::days(config$dates$start_offset_days),
+      end = date_max,
+      min = date_min,
+      max = date_max
+    )
+  })
   date_range <- reactive({
     as.character(input$date_range)
   })

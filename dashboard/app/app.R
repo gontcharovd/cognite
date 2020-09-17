@@ -92,7 +92,7 @@ ui <- shinydashboard::dashboardPage(
 #   input: not used
 #   output: passes rendered dygraph, flowsheet and legend to UI
 server <- function(input, output) {
-  dates <- shiny::callModule(get_dates, "date_selection")
+  dates <- shiny::callModule(get_dates, "date_selection", config = config)
   sensors <- shiny::callModule(get_sensors, "sensor_selection")
   sensor_data <- shiny::callModule(
     get_sensor_data,

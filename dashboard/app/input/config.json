@@ -21,7 +21,7 @@
       "right": "TRUE"
     },
     "date_range": {
-      "icon": "info",
+      "icon": "calendar",
       "circle": "FALSE",
       "size": "lg",
       "label": "Date range"
