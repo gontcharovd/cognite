@@ -25,7 +25,7 @@ Every day new data is loaded and old date is deleted.
 
 ## Solution
 
-An application was developed that wllows to calculate and visualize the pressure difference between any two sensors.
+An application was developed that allows to calculate and visualize the pressure difference between any two sensors.
 In addition, the location of selected sensors is highlighted in a flowchart.
 
 This exercise serves to demonstrate how a reliable data processing architecture based on microservices can be built using open-source technology.
