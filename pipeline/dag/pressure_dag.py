@@ -10,6 +10,7 @@ from cognite.client import CogniteClient
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.postgres_operator import PostgresOperator
+from dotenv import load_dotenv
 
 COMPRESSOR_ID = 7372310232665628
 SENSOR_NAMES = [
@@ -21,13 +22,13 @@ SENSOR_NAMES = [
     '23-PT-92539',
     '23-PT-92540'
 ]
-OUTPUT_PATH = os.environ.get('TMP_PATH')
+OUTPUT_PATH = '/tmp'# os.environ.get('TMP_PATH')
 OUTPUT_FILE = 'postgres_query.sql'
 
 
 dag = DAG(
     'compressor_pressure',
-    start_date=datetime(2020, 7, 1),
+    start_date=datetime(2020, 10, 1),
     schedule_interval='@daily',
     template_searchpath=OUTPUT_PATH,
     max_active_runs=1,
@@ -37,6 +38,7 @@ dag = DAG(
 
 def _get_cognite_client():
     """Authenticate and return Cognite client. """
+    load_dotenv()
     client = CogniteClient()
     assert client.login.status().logged_in is True
     return client

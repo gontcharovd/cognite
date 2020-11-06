@@ -5,7 +5,7 @@ RUN apt install -y python3-pip python3-venv supervisor
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-WORKDIR  /home/pipeline
+WORKDIR /home/pipeline
 
 ENV VIRTUAL_ENV=/home/pipeline/env
 RUN python3 -m venv env
