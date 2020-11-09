@@ -1,3 +1,5 @@
+import os
+
 from airflow.hooks.base_hook import BaseHook
 from cognite.client import CogniteClient
 
@@ -16,7 +18,6 @@ class CogniteHook(BaseHook):
     """
 
     COMPRESSOR_ID = 7372310232665628
-    SQL_PATH = '/tmp/postgres_query.sql'
     SENSOR_NAMES = [
         '23-PT-92531',
         '23-PT-92532',
@@ -105,6 +106,8 @@ class CogniteHook(BaseHook):
             start_date (datetime): sensor data left bound
             end_date (datetime): sensor data right bound
             date_offset (int): negative timedelta applied to both bounds
+        Returns:
+            (pd.DataFrame): timestamp, id, name and pressure
         """
         start = start_date - timedelta(days=date_offset)
         end = end_date - timedelta(days=date_offset)
@@ -135,13 +138,4 @@ class CogniteHook(BaseHook):
         )
         long_df.dropna(inplace=True)
 
-        with open(SQL_PATH, 'w') as handle:
-            for _, vals in long_df.iterrows():
-                handle.write(
-                    'INSERT INTO compressor_pressure VALUES ('
-                    f"'{vals['timestamp']}Z', "
-                    f"{vals['id']}, "
-                    f"'{vals['name']}', "
-                    f"{vals['pressure']}) "
-                    "ON CONFLICT DO NOTHING;\n"
-                )
+        return long_df
