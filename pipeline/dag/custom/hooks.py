@@ -99,18 +99,15 @@ class CogniteHook(BaseHook):
         ]
         return sensor_info
 
-    def get_sensor_data(self, start_date, end_date, date_offset=8):
+    def get_sensor_data(self, start_date, end_date):
         """Query a range of sensor data and writo to .sql file.
 
         Args:
             start_date (datetime): sensor data left bound
             end_date (datetime): sensor data right bound
-            date_offset (int): negative timedelta applied to both bounds
         Returns:
             (pd.DataFrame): timestamp, id, name and pressure
         """
-        start = start_date - timedelta(days=date_offset)
-        end = end_date - timedelta(days=date_offset)
         client = self._get_client()
 
         sensor_info = self._get_sensor_info(client)
