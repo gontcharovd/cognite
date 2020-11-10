@@ -2,6 +2,7 @@ import os
 
 from airflow.hooks.base_hook import BaseHook
 from cognite.client import CogniteClient
+from dotenv import load_dotenv
 
 
 class CogniteHook(BaseHook):
@@ -28,36 +29,26 @@ class CogniteHook(BaseHook):
         '23-PT-92540'
     ]
 
-    def __init__(self, client_name='cognite', project='publicdata'):
+    def __init__(self):
         super().__init__(source=None)
-        self._client = None
-        self._api_key = os.environ.get('COGNITE_API_KEY')
-        self._client_name = client_name
-        self._project = project
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
-
-    def close(self):
-        """Closes any active session. """
-        if self.session:
-            self.session.close()
         self._client = None
 
     def _get_client(self):
         "Authenticate and return the Cognite client. """
         if self._client is None:
-            if not self._api_key:
-                raise ValueError('No Cognite api_key specified.')
+            load_dotenv()
+            api_key = os.environ.get('COGNITE_API_KEY')
+            client_name = os.environ.get('COGNITE_CLIENT_NAME')
+            api_key = os.environ.get('COGNITE_PROJECT')
+            for env_var in [
+                'COGNITE_API_KEY',
+                'COGNITE_CLIENT_NAME',
+                'COGNITE_PROJECT'
+            ]:
+                if not os.environ.get(env_var):
+                    raise ValueError(f'Missing environment variable {env_var}.')
 
-            self._client = CogniteClient(
-                api_key=self._api_key,
-                client_name=self._client_name,
-                project=self._project
-            )
+            self._client = CogniteClient()
         return self._client
 
     def _get_ts_id(client, sensor_id):

@@ -41,17 +41,14 @@ class CogniteFetchSensorDataOperator(BaseOperator):
         start_date = self._start_date
         end_date = self._end_date
 
-        try:
-            self.log.info(
-                f'Fetching sensor data for {start_date} to {end_date}'
-            )
-            sensor_data = hook.get_sensor_data(
-                start_date=start_date,
-                end_date=end_date
-            )
-            self.log.info(f'Fetched {len(sensor_data)} ratings')
-        finally:
-            hook.close()
+        self.log.info(
+            f'Fetching sensor data for {start_date} to {end_date}'
+        )
+        sensor_data = hook.get_sensor_data(
+            start_date=start_date,
+            end_date=end_date
+        )
+        self.log.info(f'Fetched {len(sensor_data)} ratings')
 
         # make sure the output directory exists
         output_dir = os.path.dirname(self._output_path)
