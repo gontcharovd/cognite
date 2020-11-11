@@ -6,7 +6,7 @@ Query data through the Cognite Python SDK and write to a PostgreSQL database
 import os
 import pandas as pd
 
-from custom.operators import CogniteFetchSensorDataOperator
+from custom_airflow.operators import CogniteFetchSensorDataOperator
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
 from datetime import datetime, timedelta
@@ -25,8 +25,8 @@ dag = DAG(
 
 fetch_sensor_data = CogniteFetchSensorDataOperator(
     task_id='fetch_sensor_data',
-    start_date='{{ ds }}',
-    end_date='{{ next_ds }}',
+    start_date='{{ execution_date }}',
+    end_date='{{ next_execution_date }}',
     date_offset=8,
     output_path=OUTPUT_PATH,
     dag=dag

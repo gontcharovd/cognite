@@ -33,7 +33,7 @@ class CogniteHook(BaseHook):
         super().__init__(source=None)
         self._client = None
 
-    def _get_client(self):
+    def _get_cognite_client(self):
         "Authenticate and return the Cognite client. """
         if self._client is None:
             load_dotenv()
@@ -51,7 +51,7 @@ class CogniteHook(BaseHook):
             self._client = CogniteClient()
         return self._client
 
-    def _get_ts_id(client, sensor_id):
+    def _get_ts_id(self, sensor_id):
         """Get the id of a timeseries of a given sensor.
 
         Args:
@@ -60,13 +60,13 @@ class CogniteHook(BaseHook):
         Returns:
             (int): time series id of a sensor's time series
         """
-        sensor = client.assets.retrieve(id=sensor_id)
+        sensor = self._client.assets.retrieve(id=sensor_id)
         time_series = sensor.time_series()[0]
         time_series_id = time_series.id
         assert isinstance(time_series_id, int)
         return time_series_id
 
-    def _get_sensor_info(client, sensor_names=SENSOR_NAMES):
+    def _get_sensor_info(self, sensor_names=SENSOR_NAMES):
         """Get the properties of chosen compressor sensors.
 
         Args:
@@ -76,7 +76,7 @@ class CogniteHook(BaseHook):
             (pd.DataFrame): name, sensor id and time series id of sensors
         """
         subtree_df = (
-            client.assets
+            self._client.assets
             .retrieve(id=COMPRESSOR_ID)
             .subtree()
             .to_pandas()
@@ -99,14 +99,15 @@ class CogniteHook(BaseHook):
         Returns:
             (pd.DataFrame): timestamp, id, name and pressure
         """
-        client = self._get_client()
+        client = self._get_cognite_client()
+        print('@@@@@@@@@@@@@@@@@' + str(type(client)))
 
         sensor_info = self._get_sensor_info(client)
 
         sensor_df = client.datapoints.retrieve_dataframe(
             id=sensor_info.ts_id.values.tolist(),
-            start=start,
-            end=end,
+            start=start_date,
+            end=end_date,
             granularity='1m',
             aggregates=['average'],
             include_aggregate_name=False

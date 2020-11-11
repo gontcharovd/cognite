@@ -2,8 +2,8 @@ import os
 
 from airflow.models import BaseOperator
 from airflow.utils import apply_defaults
-from custom.hooks import CogniteHook
-from datetime import datetime, timedelta
+from custom_airflow.hooks import CogniteHook
+from datetime import datetime
 
 class CogniteFetchSensorDataOperator(BaseOperator):
     """Operator that fetches sensor data from the Cognite API.
@@ -21,8 +21,8 @@ class CogniteFetchSensorDataOperator(BaseOperator):
     def __init__(
         self,
         output_path,
-        start_date='{{ ds }}',
-        end_date='{{ next_ds }}',
+        start_date='{{ execution_date }}',
+        end_date='{{ next_execution_date }}',
         date_offset=8,
         **kwargs
     ):
@@ -34,9 +34,6 @@ class CogniteFetchSensorDataOperator(BaseOperator):
 
     def execute(self, context):
         hook = CogniteHook()
-
-        # start_date = datetime(self._start_date) - timedelta(days=self._date_offset)
-        # end_date = datetime(self._end_date) - timedelta(days=self._date_offset)
 
         start_date = self._start_date
         end_date = self._end_date
