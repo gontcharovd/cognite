@@ -3,7 +3,6 @@ import pandas as pd
 
 from airflow.hooks.base_hook import BaseHook
 from cognite.client import CogniteClient
-from dotenv import load_dotenv
 
 
 class CogniteSensorHook(BaseHook):
@@ -33,8 +32,6 @@ class CogniteSensorHook(BaseHook):
     def _authenticate(self):
         "Authenticate and instantiate the Cognite client. """
         if self._client is None:
-            if not self.DOCKER_ENVIRONMENT:
-                load_dotenv()
             api_key = os.environ.get('COGNITE_API_KEY')
             client_name = os.environ.get('COGNITE_CLIENT_NAME')
             api_key = os.environ.get('COGNITE_PROJECT')

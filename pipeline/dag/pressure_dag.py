@@ -12,11 +12,11 @@ from airflow.operators.postgres_operator import PostgresOperator
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-OUTPUT_DIR='/tmp'
+OUTPUT_DIR=os.environ.get('TMP_PATH')
 OUTPUT_FILE='postgres_query.sql'
 
 dag = DAG(
-    'custom_compressor_pressure',
+    'compressor_pressure',
     start_date=datetime(2020, 10, 1),
     schedule_interval='@daily',
     template_searchpath=OUTPUT_DIR,

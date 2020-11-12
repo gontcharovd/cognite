@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   dashboard:
-    image: gontcharovd/ccp-dashboard
+    image: gontcharovd/ccp-dashboard:latest
     ports:
       - "3838:3838"
     network_mode: host
@@ -12,7 +12,7 @@ services:
       - DB_PWD=${DB_PWD}
     container_name: dashboard_container
   pipeline:
-    image: gontcharovd/ccp-pipeline
+    image: gontcharovd/ccp-pipeline:custom_airflow
     ports:
       - "8080:8080"
       - "5432:5432"
