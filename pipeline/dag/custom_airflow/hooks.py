@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 from airflow.hooks.base_hook import BaseHook
 from cognite.client import CogniteClient
@@ -11,11 +12,6 @@ class CogniteHook(BaseHook):
     Abstracts details of the Cognite API and provides several convenience
     methods for fetching sensor data (e.g. get timeseries, sensors, data).
     Also provides support for authentication, etc.
-
-    Args:
-        api_key (str): the Cognite API key
-        client_name (str): name of the cognite client
-        project (str): the name of the Open Industrial Data Project
     """
 
     COMPRESSOR_ID = 7372310232665628
@@ -28,15 +24,17 @@ class CogniteHook(BaseHook):
         '23-PT-92539',
         '23-PT-92540'
     ]
+    DOCKER_ENVIRONMENT = False
 
     def __init__(self):
-        super().__init__(source=None)
+        super().__init__(**kwargs)
         self._client = None
 
-    def _get_cognite_client(self):
-        "Authenticate and return the Cognite client. """
+    def _authenticate(self):
+        "Authenticate and instantiate the Cognite client. """
         if self._client is None:
-            load_dotenv()
+            if not self.DOCKER_ENVIRONMENT:
+                load_dotenv()
             api_key = os.environ.get('COGNITE_API_KEY')
             client_name = os.environ.get('COGNITE_CLIENT_NAME')
             api_key = os.environ.get('COGNITE_PROJECT')
@@ -48,45 +46,30 @@ class CogniteHook(BaseHook):
                 if not os.environ.get(env_var):
                     raise ValueError(f'Missing environment variable {env_var}.')
 
-            self._client = CogniteClient()
-        return self._client
+            self._client = CogniteClient(disable_pypi_version_check=True)
 
     def _get_ts_id(self, sensor_id):
-        """Get the id of a timeseries of a given sensor.
-
-        Args:
-            client: Cognite SDK client
-            sennsor_id (int): asset id of a sensor
-        Returns:
-            (int): time series id of a sensor's time series
-        """
+        """Get the id of a timeseries of a given sensor. """
         sensor = self._client.assets.retrieve(id=sensor_id)
         time_series = sensor.time_series()[0]
         time_series_id = time_series.id
         assert isinstance(time_series_id, int)
         return time_series_id
 
-    def _get_sensor_info(self, sensor_names=SENSOR_NAMES):
-        """Get the properties of chosen compressor sensors.
-
-        Args:
-            client: Cognite SDK client
-            sensor_names (list): pressure sensors names
-        Returns:
-            (pd.DataFrame): name, sensor id and time series id of sensors
-        """
+    def _get_sensor_info(self):
+        """Get the time series info of chosen sensors.  """
         subtree_df = (
             self._client.assets
-            .retrieve(id=COMPRESSOR_ID)
+            .retrieve(id=self.COMPRESSOR_ID)
             .subtree()
             .to_pandas()
         )
         sensor_info = subtree_df.loc[
-            subtree_df['name'].isin(sensor_names),
+            subtree_df['name'].isin(self.SENSOR_NAMES),
             ['name', 'id']
         ]
         sensor_info['ts_id'] = [
-            _get_ts_id(client, s_id) for s_id in sensor_info.id
+            self._get_ts_id(sensor_id) for sensor_id in sensor_info.id
         ]
         return sensor_info
 
@@ -99,12 +82,10 @@ class CogniteHook(BaseHook):
         Returns:
             (pd.DataFrame): timestamp, id, name and pressure
         """
-        client = self._get_cognite_client()
-        print('@@@@@@@@@@@@@@@@@' + str(type(client)))
+        self._authenticate()
+        sensor_info = self._get_sensor_info()
 
-        sensor_info = self._get_sensor_info(client)
-
-        sensor_df = client.datapoints.retrieve_dataframe(
+        sensor_df = self._client.datapoints.retrieve_dataframe(
             id=sensor_info.ts_id.values.tolist(),
             start=start_date,
             end=end_date,
