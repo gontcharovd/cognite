@@ -6,8 +6,8 @@ from cognite.client import CogniteClient
 from dotenv import load_dotenv
 
 
-class CogniteHook(BaseHook):
-    """Hook for the Cognite API.
+class CogniteSensorHook(BaseHook):
+    """Hook to query sensor data from the Cognite API.
 
     Abstracts details of the Cognite API and provides several convenience
     methods for fetching sensor data (e.g. get timeseries, sensors, data).
@@ -27,7 +27,7 @@ class CogniteHook(BaseHook):
     DOCKER_ENVIRONMENT = False
 
     def __init__(self):
-        super().__init__(**kwargs)
+        super().__init__(source=None)
         self._client = None
 
     def _authenticate(self):
