@@ -18,6 +18,9 @@ jobs:
       - name: Run Flake8
         run: flake8
 
+        -name: Install local package cogflow
+        run: pip install ./pipeline/cogflow
+
       - name: Install dependencies
         run: pip install apache-airflow['postgres'] cognite-sdk pytest
 

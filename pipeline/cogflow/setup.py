@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import setuptools
 
-requirements = ['apache-airflow', 'cognite-sdk']
+requirements = ["apache-airflow['postgres']", 'cognite-sdk']
 
 setuptools.setup(
     name='cogflow',
