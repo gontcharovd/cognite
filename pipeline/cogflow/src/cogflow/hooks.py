@@ -23,7 +23,6 @@ class CogniteSensorHook(BaseHook):
         '23-PT-92539',
         '23-PT-92540'
     ]
-    DOCKER_ENVIRONMENT = False
 
     def __init__(self):
         super().__init__(source=None)

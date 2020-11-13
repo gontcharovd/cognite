@@ -2,8 +2,9 @@ import os
 
 from airflow.models import BaseOperator
 from airflow.utils import apply_defaults
-from custom_airflow.hooks import CogniteSensorHook
+from cognite_airflow.hooks import CogniteSensorHook
 from datetime import datetime, timedelta
+
 
 class CogniteFetchSensorDataOperator(BaseOperator):
     """Operator that fetches sensor data from the Cognite API.
@@ -21,7 +22,14 @@ class CogniteFetchSensorDataOperator(BaseOperator):
     template_fields = ('_start_date', '_end_date')
 
     @apply_defaults
-    def __init__(self, output_path, start_date, end_date, date_offset, **kwargs):
+    def __init__(
+        self,
+        output_path,
+        start_date,
+        end_date,
+        date_offset,
+        **kwargs
+    ):
         super().__init__(**kwargs)
         self._output_path = output_path
         self._start_date = start_date

@@ -4,16 +4,15 @@ Query data through the Cognite Python SDK and write to a PostgreSQL database
 """
 
 import os
-import pandas as pd
 
-from custom_airflow.operators import CogniteFetchSensorDataOperator
+from datetime import datetime
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
-from datetime import datetime, timedelta
-from dotenv import load_dotenv
+from cogflow.operators import CogniteFetchSensorDataOperator
 
-OUTPUT_DIR=os.environ.get('TMP_PATH')
-OUTPUT_FILE='postgres_query.sql'
+
+OUTPUT_DIR = os.environ.get('TMP_PATH')
+OUTPUT_FILE = 'postgres_query.sql'
 
 dag = DAG(
     'compressor_pressure',
