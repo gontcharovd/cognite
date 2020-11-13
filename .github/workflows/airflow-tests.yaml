@@ -1,4 +1,4 @@
-me: Python static checks and tests
+name: Python static checks and tests
 
 on: [push]
 
