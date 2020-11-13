@@ -56,4 +56,5 @@ recover_disk_space = PostgresOperator(
     dag=dag
 )
 
-fetch_sensor_data >> write_to_postgres >> delete_old_records >> recover_disk_space
+fetch_sensor_data >> write_to_postgres
+write_to_postgres >> delete_old_records >> recover_disk_space

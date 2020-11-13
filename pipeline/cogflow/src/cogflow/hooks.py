@@ -31,16 +31,15 @@ class CogniteSensorHook(BaseHook):
     def _authenticate(self):
         "Authenticate and instantiate the Cognite client. """
         if self._client is None:
-            api_key = os.environ.get('COGNITE_API_KEY')
-            client_name = os.environ.get('COGNITE_CLIENT_NAME')
-            api_key = os.environ.get('COGNITE_PROJECT')
             for env_var in [
                 'COGNITE_API_KEY',
                 'COGNITE_CLIENT_NAME',
                 'COGNITE_PROJECT'
             ]:
                 if not os.environ.get(env_var):
-                    raise ValueError(f'Missing environment variable {env_var}.')
+                    raise ValueError(
+                        f'Missing environment variable {env_var}.'
+                    )
 
             self._client = CogniteClient(disable_pypi_version_check=True)
 
