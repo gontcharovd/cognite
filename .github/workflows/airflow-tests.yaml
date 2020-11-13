@@ -19,7 +19,7 @@ jobs:
         run: flake8
 
       - name: Install dependencies
-        run: pip install apache-airflow cognite-sdk pytest
+        run: pip install apache-airflow['postgres'] cognite-sdk pytest
 
       - name: Test DAG integrity
         run: pytest pipeline/tests/
