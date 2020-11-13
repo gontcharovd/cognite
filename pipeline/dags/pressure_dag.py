@@ -11,7 +11,7 @@ from airflow.operators.postgres_operator import PostgresOperator
 from cogflow.operators import CogniteFetchSensorDataOperator
 
 
-OUTPUT_DIR = os.environ.get('TMP_PATH')
+OUTPUT_DIR = 'tmp'
 OUTPUT_FILE = 'postgres_query.sql'
 
 dag = DAG(
