@@ -22,7 +22,7 @@ jobs:
         run: pip install ./pipeline/cogflow
 
       - name: Install dependencies
-        run: pip install apache-airflow['postgres'] cognite-sdk pytest
+        run: pip install 'apache-airflow[postgres]' cognite-sdk pytest
 
       - name: Test DAG integrity
         run: pytest pipeline/tests/
