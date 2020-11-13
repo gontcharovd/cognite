@@ -22,4 +22,4 @@ jobs:
         run: pip install apache-airflow cognite-sdk pytest
 
       - name: Test DAG integrity
-        run: pytest tests/
+        run: pytest pipeline/tests/
