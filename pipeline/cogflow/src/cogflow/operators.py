@@ -2,7 +2,7 @@ import os
 
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
-from cognite_airflow.hooks import CogniteSensorHook
+from cogflow.hooks import CogniteSensorHook
 from datetime import datetime, timedelta
 
 
