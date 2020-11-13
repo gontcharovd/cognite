@@ -16,10 +16,10 @@ jobs:
       - name: Install Flake8
         run: pip install flake8
       - name: Run Flake8
-        run: flake8 pipeline/dags/
+        run: flake8
 
       - name: Install dependencies
-        run: pip install apache-airflow, cognite-sdk, pytest
+        run: pip install apache-airflow cognite-sdk pytest
 
       - name: Test DAG integrity
         run: pytest tests/
