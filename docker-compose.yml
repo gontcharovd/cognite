@@ -1,27 +1,64 @@
-version: "3.8"
+version: '3'
+x-airflow-common:
+  &airflow-common
+  build:
+    context: pipeline/docker
+    dockerfile: Dockerfile
+  env_file: .env
+  volumes:
+    - ./pipeline/airflow/dags:/opt/airflow/dags
+    - ./pipeline/airflow/logs:/opt/airflow/logs
+    - ./pipeline/airflow/plugins:/opt/airflow/plugins
+    - ./pipeline/airflow/tmp:/opt/airflow/tmp
+  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+  depends_on:
+    postgres:
+      condition: service_healthy
 
 services:
-  dashboard:
-    image: gontcharovd/ccp-dashboard:latest
-    ports:
-      - "3838:3838"
-    network_mode: host
-    environment:
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PWD=${DB_PWD}
-    container_name: dashboard_container
-  pipeline:
-    image: gontcharovd/ccp-pipeline:custom_airflow
-    ports:
-      - "8080:8080"
-      - "5432:5432"
-    network_mode: host
-    environment:
-      - AIRFLOW_CONN_COGNITE=${AIRFLOW_CONN_COGNITE}
-      - COGNITE_API_KEY=${COGNITE_API_KEY}
-      - COGNITE_CLIENT_NAME=${COGNITE_CLIENT_NAME}
-      - COGNITE_PROJECT=${COGNITE_PROJECT}
+  # dashboard:
+  #   image: gontcharovd/ccp-dashboard:latest
+  #   ports:
+  #     - 3838:3838
+  #   network_mode: host
+  #   env_file: .env
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+
+  postgres:
+    image: postgres:13
+    env_file: .env
     volumes:
-      - /var/log/supervisor-ccp-pipeline:/var/log/supervisor
-    container_name: pipeline_container
+      - ./database/postgresql/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    restart: always
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    restart: always
+
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    command: setup.sh
+    env_file: .env
+
+volumes:
+  postgres-db-volume:
