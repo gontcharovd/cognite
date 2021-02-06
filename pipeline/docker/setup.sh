@@ -1,6 +1,6 @@
 echo "checking if Airflow metastore and Webserver user exist"
-(airflow users list && echo "Airflow metastore and Webserver user found. \
-				Skipping initialization") || (
+(airflow users list &&
+  echo "Airflow metastore and Webserver user found. Skipping initialization") || (
 echo "Initializing Airflow metastore and creating Airflow Webserver user"
 airflow db init &&
   airflow users create \

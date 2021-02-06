@@ -4,7 +4,8 @@ x-airflow-common:
   build:
     context: pipeline/docker
     dockerfile: Dockerfile
-  env_file: .env
+  env_file:
+    - .env
   volumes:
     - ./pipeline/airflow/dags:/opt/airflow/dags
     - ./pipeline/airflow/logs:/opt/airflow/logs
@@ -21,14 +22,16 @@ services:
   #   ports:
   #     - 3838:3838
   #   network_mode: host
-  #   env_file: .env
+  #   env_file: 
+  #     - .env
   #   depends_on:
   #     postgres:
   #       condition: service_healthy
 
   postgres:
     image: postgres:13
-    env_file: .env
+    env_file: 
+      - .env
     volumes:
       - ./database/postgresql/data:/var/lib/postgresql/data
     healthcheck:
@@ -58,7 +61,8 @@ services:
     <<: *airflow-common
     entrypoint: /bin/bash
     command: setup.sh
-    env_file: .env
+    env_file:
+      - .env
 
 volumes:
   postgres-db-volume:
