@@ -9,3 +9,4 @@ pipeline/env/
 pipeline/tags/
 airflow.env
 database/postgresql
+pipeline/airflow/logs/
