@@ -8,5 +8,6 @@ tmp/
 pipeline/env/
 pipeline/tags/
 airflow.env
+application-db.env
 database/postgresql
 pipeline/airflow/logs/

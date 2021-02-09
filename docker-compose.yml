@@ -6,7 +6,7 @@ x-airflow-common:
     context: pipeline/docker
     dockerfile: Dockerfile
   env_file:
-    - .env
+    - airflow.env
   volumes:
     - ./pipeline/airflow/dags:/opt/airflow/dags
     - ./pipeline/airflow/logs:/opt/airflow/logs
@@ -14,7 +14,7 @@ x-airflow-common:
     - ./pipeline/airflow/tmp:/opt/airflow/tmp
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
-    postgres:
+    airflow-postgres:
       condition: service_healthy
 
 services:
@@ -26,15 +26,27 @@ services:
   #   env_file: 
   #     - .env
   #   depends_on:
-  #     postgres:
+  #     airflow-postgres:
   #       condition: service_healthy
-
-  postgres:
+  
+  application-db:
     image: postgres:13
     env_file: 
-      - .env
+      - application-db.env
     volumes:
       - ./database/postgresql/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "cognite"]
+      interval: 5s
+      retries: 5
+    restart: always
+
+  airflow-postgres:
+    image: postgres:13
+    env_file: 
+      - airflow.env
+    volumes:
+      - ./pipeline/postgresql/data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
@@ -61,8 +73,6 @@ services:
   airflow-init:
     <<: *airflow-common
     command: bash setup.sh
-    env_file:
-      - .env
 
 volumes:
   postgres-db-volume:
