@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
-from cogflow.operators import CogniteFetchSensorDataOperator
+from custom_operators import CogniteFetchSensorDataOperator
 
 
 OUTPUT_DIR = 'tmp'
