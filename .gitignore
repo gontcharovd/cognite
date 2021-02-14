@@ -5,3 +5,7 @@ tags
 tmp/
 *.pyc
 *.pyo
+airflow.env
+application-db.env
+pipeline/airflow/logs/
+pipeline/postgresql/
