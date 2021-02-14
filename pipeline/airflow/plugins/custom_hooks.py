@@ -25,7 +25,7 @@ class CogniteSensorHook(BaseHook):
     ]
 
     def __init__(self):
-        super().__init__(source=None)
+        super().__init__()
         self._client = None
 
     def _authenticate(self):
