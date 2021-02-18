@@ -10,4 +10,4 @@ USER airflow
 
 VOLUME /tmp
 
-COPY setup.sh .
+COPY setup.sh ./setup.sh
