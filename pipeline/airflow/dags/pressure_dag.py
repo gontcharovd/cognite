@@ -16,7 +16,8 @@ OUTPUT_FILE = 'postgres_query.sql'
 
 dag = DAG(
     'compressor_pressure',
-    start_date=datetime(2020, 10, 1),
+    start_date=datetime(2021, 1, 1),
+    end_date=datetime(2021, 1, 3),
     schedule_interval='@daily',
     template_searchpath=OUTPUT_DIR,
     max_active_runs=1,
@@ -34,14 +35,14 @@ fetch_sensor_data = CogniteFetchSensorDataOperator(
 
 write_to_postgres = PostgresOperator(
     task_id='write_to_postgres',
-    postgres_conn_id='cognite',
+    postgres_conn_id='application_db',
     sql=OUTPUT_FILE,
     dag=dag
 )
 
 delete_old_records = PostgresOperator(
     task_id='delete_old_records',
-    postgres_conn_id='cognite',
+    postgres_conn_id='application_db',
     sql="DELETE FROM compressor_pressure \
          WHERE timestamp < DATE(CURRENT_DATE - INTERVAL '90 DAYS');",
     dag=dag
@@ -49,7 +50,7 @@ delete_old_records = PostgresOperator(
 
 recover_disk_space = PostgresOperator(
     task_id='recover_disk_space',
-    postgres_conn_id='cognite',
+    postgres_conn_id='application_db',
     sql='VACUUM (VERBOSE, ANALYZE) compressor_pressure;',
     # autocommit because VACUUM can't run inside a transaction block
     autocommit=True,
