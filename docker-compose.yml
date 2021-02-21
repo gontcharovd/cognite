@@ -18,16 +18,17 @@ x-airflow-common:
       condition: service_healthy
 
 services:
-  # dashboard:
-  #   image: gontcharovd/ccp-dashboard:latest
-  #   ports:
-  #     - 3838:3838
-  #   network_mode: host
-  #   env_file: 
-  #     - .env
-  #   depends_on:
-  #     airflow-postgres:
-  #       condition: service_healthy
+  dashboard:
+    build:
+      context: dashboard/
+      dockerfile: Dockerfile
+    ports:
+      - 3838:3838
+    env_file: 
+      - dashboard.env
+    depends_on:
+      airflow-postgres:
+        condition: service_healthy
   
   application-db:
     image: postgres:13

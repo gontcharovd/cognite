@@ -10,7 +10,7 @@ execute_query <- function(query) {
   con <- DBI::dbConnect(
      RPostgres::Postgres(),
      dbname = Sys.getenv("DB_NAME"),
-     host = "localhost",
+     host = "application-db",
      port = 5432,
      user = Sys.getenv("DB_USER"),
      password = Sys.getenv("DB_PWD")
