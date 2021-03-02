@@ -22,4 +22,4 @@ written to the database through a data pipeline built with Apache Airflow.
 ***
 
 Distributed under the MIT License <br>
-Copyright (c) 2020 [Denis Gontcharov](https://gontcharov.dev)
+Copyright (c) 2020 [Denis Gontcharov](https://gontcharov.be)
