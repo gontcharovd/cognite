@@ -17,7 +17,6 @@ OUTPUT_FILE = 'postgres_query.sql'
 dag = DAG(
     'compressor_pressure',
     start_date=datetime(2021, 1, 1),
-    end_date=datetime(2021, 2, 1),
     schedule_interval='@daily',
     template_searchpath=OUTPUT_DIR,
     max_active_runs=1,
