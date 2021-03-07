@@ -19,7 +19,7 @@ class CogniteSensorOperator(BaseOperator):
         date_offset: negative timedelta applied to both bounds
     """
 
-    template_fields = ('start_date', 'end_date', 'sql_file')
+    template_fields = ('_start_date', '_end_date', 'sql_file')
 
     @apply_defaults
     def __init__(
@@ -32,15 +32,15 @@ class CogniteSensorOperator(BaseOperator):
     ) -> None:
         super().__init__(**kwargs)
         self.sql_file = sql_file
-        self.start_date = start_date
-        self.end_date = end_date
+        self._start_date = start_date
+        self._end_date = end_date
         self.date_offset = date_offset
 
     def execute(self, context):
         hook = CogniteSensorHook()
 
-        start_date = datetime.fromisoformat(self.start_date)
-        end_date = datetime.fromisoformat(self.end_date)
+        start_date = datetime.fromisoformat(self._start_date)
+        end_date = datetime.fromisoformat(self._end_date)
         start_date_offset = start_date - timedelta(days=self.date_offset)
         end_date_offset = end_date - timedelta(days=self.date_offset)
 
