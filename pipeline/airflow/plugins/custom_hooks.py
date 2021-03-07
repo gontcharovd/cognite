@@ -33,16 +33,22 @@ class CogniteSensorHook(BaseHook):
         if self._client is None:
             api_key = os.environ.get('COGNITE_API_KEY')
             client_name = os.environ.get('COGNITE_CLIENT_NAME')
-            api_key = os.environ.get('COGNITE_PROJECT')
+            project = os.environ.get('COGNITE_PROJECT')
             for env_var in [
                 'COGNITE_API_KEY',
                 'COGNITE_CLIENT_NAME',
                 'COGNITE_PROJECT'
             ]:
                 if not os.environ.get(env_var):
-                    raise ValueError(f'Missing environment variable {env_var}.')
+                    raise ValueError(
+                        f'Missing environment variable {env_var}.')
 
-            self._client = CogniteClient(disable_pypi_version_check=True)
+            self._client = CogniteClient(
+                api_key=api_key,
+                project=project,
+                client_name=client_name,
+                disable_pypi_version_check=True
+            )
 
     def _get_ts_id(self, sensor_id):
         """Get the id of a timeseries of a given sensor. """

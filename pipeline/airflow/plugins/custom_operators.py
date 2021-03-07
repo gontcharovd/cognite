@@ -57,9 +57,9 @@ class CogniteFetchSensorDataOperator(BaseOperator):
         output_dir = os.path.dirname(self._output_path)
         os.makedirs(output_dir, exist_ok=True)
 
-        with open(self._output_path, 'w') as handle_:
+        with open(self._output_path, 'w') as handle:
             for _, vals in sensor_data.iterrows():
-                handle_.write(
+                handle.write(
                     'INSERT INTO compressor_pressure VALUES ('
                     f"'{vals['timestamp']}Z', "
                     f"{vals['id']}, "
