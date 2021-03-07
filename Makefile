@@ -6,4 +6,4 @@ airflow-init:
 				sudo chmod -R 777 pipeline/airflow/plugins/
 				sudo chmod -R 777 pipeline/airflow/tmp/
 				docker-compose up airflow-init
-				sudo chmod -R 777 database/postgresql/
+				sudo chmod -R 777 pipeline/postgresql/
