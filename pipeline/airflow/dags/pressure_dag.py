@@ -3,39 +3,34 @@
 Query data through the Cognite Python SDK and write to a PostgreSQL database
 """
 
-import os
-
-from datetime import datetime
 from airflow import DAG
-from airflow.operators.postgres_operator import PostgresOperator
-from custom_operators import CogniteFetchSensorDataOperator
-
-
-OUTPUT_DIR = 'tmp'
-OUTPUT_FILE = 'postgres_query.sql'
+from airflow.providers.postgres.operators.postgres import PostgresOperator
+from custom_operators.cognite_sensor_operator import CogniteSensorOperator
+from custom_operators.postgres_file_operator import PostgresFileOperator
+from datetime import datetime
 
 dag = DAG(
     'compressor_pressure',
     start_date=datetime(2021, 1, 1),
     schedule_interval='@daily',
-    template_searchpath=OUTPUT_DIR,
     max_active_runs=1,
     concurrency=1
 )
 
-fetch_sensor_data = CogniteFetchSensorDataOperator(
+fetch_sensor_data = CogniteSensorOperator(
     task_id='fetch_sensor_data',
     start_date='{{ ds }}',
     end_date='{{ next_ds }}',
     date_offset=7,
-    output_path=os.path.join(OUTPUT_DIR, OUTPUT_FILE),
+    sql_file='tmp/sensor_data_{{ ds }}.sql',
     dag=dag
 )
 
-write_to_postgres = PostgresOperator(
-    task_id='write_to_postgres',
+write_new_records = PostgresFileOperator(
+    task_id='write_new_records',
     postgres_conn_id='application_db',
-    sql=OUTPUT_FILE,
+    sql_file='tmp/sensor_data_{{ ds }}.sql',
+    delete=False,
     dag=dag
 )
 
@@ -47,13 +42,14 @@ delete_old_records = PostgresOperator(
     dag=dag
 )
 
-recover_disk_space = PostgresOperator(
+recover_space = PostgresOperator(
     task_id='recover_disk_space',
     postgres_conn_id='application_db',
     sql='VACUUM (VERBOSE, ANALYZE) compressor_pressure;',
-    # autocommit because VACUUM can't run inside a transaction block
+    # autocommit because VACUUM can't
+    # run inside a transaction block
     autocommit=True,
     dag=dag
 )
 
-fetch_sensor_data >> write_to_postgres >> delete_old_records >> recover_disk_space
+fetch_sensor_data >> write_new_records >> delete_old_records >> recover_space
