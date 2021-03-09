@@ -67,3 +67,5 @@ class CogniteSensorOperator(BaseOperator):
                     f"{vals['pressure']}) "
                     "ON CONFLICT DO NOTHING;\n"
                 )
+                context['task_instance'].xcom_push(
+                    key='sql_file', value=self.sql_file)

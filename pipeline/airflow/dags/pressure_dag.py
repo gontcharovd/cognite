@@ -12,9 +12,9 @@ from datetime import datetime
 dag = DAG(
     'compressor_pressure',
     start_date=datetime(2021, 1, 1),
+    end_date=datetime(2021, 2, 1),
     schedule_interval='@daily',
-    max_active_runs=1,
-    concurrency=1
+    max_active_runs=8
 )
 
 fetch_sensor_data = CogniteSensorOperator(
@@ -29,8 +29,7 @@ fetch_sensor_data = CogniteSensorOperator(
 write_new_records = PostgresFileOperator(
     task_id='write_new_records',
     postgres_conn_id='application_db',
-    sql_file='tmp/sensor_data_{{ ds }}.sql',
-    delete=False,
+    delete=True,
     dag=dag
 )
 
