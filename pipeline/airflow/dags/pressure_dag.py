@@ -14,7 +14,7 @@ dag = DAG(
     start_date=datetime(2021, 1, 1),
     end_date=datetime(2021, 2, 1),
     schedule_interval='@daily',
-    max_active_runs=8
+    max_active_runs=16
 )
 
 fetch_sensor_data = CogniteSensorOperator(
