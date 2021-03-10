@@ -13,3 +13,4 @@ database/postgresql
 pipeline/airflow/logs/
 pipeline/postgresql/
 dashboard.env
+venv/
