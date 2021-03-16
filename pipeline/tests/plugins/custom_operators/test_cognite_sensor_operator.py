@@ -13,6 +13,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 def test_cognite_sensor_operator(
     mocker,
+    monkeypatch,
     test_dag,
     tmp_path: Path
 ):
@@ -33,7 +34,7 @@ def test_cognite_sensor_operator(
         start_date='{{ ds }}',
         end_date='{{ next_ds }}',
         date_offset=7,
-        sql_file='sensor_data_{{ ds }}.sql',
+        sql_file=tmp_path / 'sensor_data_{{ ds }}.sql',
         dag=test_dag
     )
 
