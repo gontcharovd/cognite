@@ -104,7 +104,7 @@ python-slugify==4.0.1
 python3-openid==3.2.0
 pytz==2020.1
 pytzdata==2020.1
-PyYAML==5.3.1
+PyYAML==5.4
 requests==2.24.0
 rich==9.2.0
 setproctitle==1.1.10
