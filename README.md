@@ -33,7 +33,7 @@ This exercise serves to demonstrate how a reliable data processing architecture 
 ## How to use the app
 
 The application is hosted on [Google Cloud Platform](https://cloud.google.com/) and the complete code is published on [GitHub](https://github.com/gontcharovd/cognite).
-Give the app a try by navigatying to the address `34.78.238.47:3838` with your web browser.
+Give the app a try by navigatying to the address `35.195.26.178:3838` with your web browser.
 
 ## Architecture
 
